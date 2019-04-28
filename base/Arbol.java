@@ -1,55 +1,124 @@
-package practica3pe;
+package base;
 
 public class Arbol {
-	String dato; // operando u operador
+	TNodo dato; // operando u operador
 	Arbol Hi; // hijo izquierdo
 	Arbol Hc; // hijo central
 	Arbol Hd; // hijo derecho
-	int num_nodos; // número de nodos
-	int profundidad; // profundidad del árbol
+	int num_nodos; // numero de nodos
+	int profundidad; // profundidad del arbol
+	int pasos = 1; // numero de hojas/terminales del arbol
 
-	public static enum Tipo {
+	private int pasosMax;
+
+	public static enum TNodo {
 		AVANZA, GIRA_DERECHA, GIRA_IZQUIERDA,
-		SIC, PROGN2, PROGN3
-	}
+		SIC, PROGN2, PROGN3;
 
-	void creaArbol(Arbol arbol, int prof_min, int prof_max){
-		if(prof_min > 0) {
-			//no puede ser hoja
-			 //generación del subarbol de operador
-			Tipo tipos[] = new Tipo[Tipo.values().length];
-			Arbol.Tipo x = Tipo.[0].values();
-			int numTipoElegido = (int) (Math.random() * (tipos.length - 3) + 3); //((int)(Math.random()*(Max-Min))+Min)
-			Tipo operador = tipos[numTipoElegido];//operador_aleatorio; //símbolo de operador aleatorio
-			dato = operador.toString();
-			 //se generan los hijos
-			 Hi = construir_arbol(arbol.HI, prof_min - 1, prof_max - 1);
-			 arbol.num_nodos = arbol.num_nodos + arbol.HI.num_nodos;
-			si tres_operandos(operador) entonces
-			Hc = construir_arbol(arbol.HC, prof_min - 1, prof_max - 1);
-			arbol.num_nodos = arbol.num_nodos + arbol.HC.num_nodos;
-			eoc // dos operandos
-			Hc = NULL;
-			Hd = construir_arbol(arbol.HD, prof_min - 1, prof_max - 1);
-			arbol.num_nodos = arbol.num_nodos + arbol.HD.num_nodos;
-			eoc // prof_min = 0
+		public int getPos(String nombre) {
+			switch(nombre) {
+			case "AVANZA": return 0;
+			case "GIRA_DERECHA": return 1;
+			case "GIRA_IZQUIERDA": return 2;
+			case "SIC": return 3;
+			case "PROGN2": return 4;
+			case "PROGN3": return 5;
+			default: return -1;
+			}
 		}
 
-		if(prof_max == 0) { // sólo puede ser hoja
-			 // generación del subarbol de operando
-			 operando = operando_aleatorio;
-			// símbolo de operando aleatorio
-			 arbol.dato = operando;
-			 arbol.num_nodos = arbol.num_nodos + 1;
-			eoc
-			 // se decide aleatoriamente operando u operador
-			 tipo = aleatorio_cero_uno;
-			 si tipo = 1 entonces // se genera operador
-			 // generación del subarbol de operador
-			 {      }
-			 eoc // se genera operando
-			// generación del subarbol de operando
-			 { }
-		 }
+		public String getNombre(int pos) {
+			switch(pos) {
+			case 0: return "AVANZA";
+			case 1: return "GIRA_DERECHA";
+			case 2: return "GIRA_IZQUIERDA";
+			case 3: return "SIC";
+			case 4: return "PROGN2";
+			case 5: return "PROGN3";
+			default: return null;
+			}
+		}
 	}
+
+	public Arbol(int pasosMax) {
+		this.pasosMax = pasosMax;
+	}
+	
+	void creaArbol(Arbol arbol, int prof_min, int prof_max){
+		if(prof_min > 0) { // no puede ser hoja
+			// generacion del subarbol de operador/funcion
+			TNodo operador = TNodo.values()[(int) (Math.random()*3)+3];
+			arbol.dato = operador;
+			pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
+			// se generan los hijos
+			arbol.Hi = new Arbol(pasosMax-pasos);
+			creaArbol(arbol.Hi, prof_min - 1, prof_max - 1);
+			arbol.num_nodos += arbol.Hi.num_nodos;
+			if (operador != TNodo.values()[3]) pasos += arbol.Hi.pasos;
+
+			if (operador == TNodo.values()[5]) { // tres operandos
+				arbol.Hc = new Arbol(pasosMax-pasos);
+				creaArbol(arbol.Hc, prof_min - 1, prof_max - 1);
+				arbol.num_nodos += arbol.Hc.num_nodos;
+				pasos += arbol.Hc.pasos;
+			}
+			else Hc = null; // dos operandos
+
+			arbol.Hd = new Arbol(pasosMax-pasos);
+			creaArbol(arbol.Hd, prof_min - 1, prof_max - 1);
+			arbol.num_nodos += arbol.Hd.num_nodos;
+			if (operador != TNodo.values()[3]) pasos += arbol.Hd.pasos;
+			else {
+				if (arbol.Hi.pasos >= arbol.Hd.pasos)
+					pasos += arbol.Hi.pasos;
+				else pasos += arbol.Hd.pasos;
+			}
+		}
+		else { // prof_min = 0
+			if(prof_max == 0) { // solo puede ser hoja
+				// generacion del subarbol de operando/terminal
+				TNodo operando = TNodo.values()[(int) (Math.random()*3)]; // simbolo de operando aleatorio
+				arbol.dato = operando;
+				arbol.num_nodos++;
+			}
+			else { // se decide aleatoriamente operando/terminal u operador/funcion
+				int tipo = (int) Math.round(Math.random());
+				if (tipo == 1) { // se genera operador/funcion
+					// generacion del subarbol de operador/funcion
+					TNodo operador = TNodo.values()[(int) (Math.random()*3)+3];
+					arbol.dato = operador;
+					pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
+					// se generan los hijos
+					arbol.Hi = new Arbol(pasosMax-pasos);
+					creaArbol(arbol.Hi, prof_min - 1, prof_max - 1);
+					arbol.num_nodos += arbol.Hi.num_nodos;
+					if (operador != TNodo.values()[3]) pasos += arbol.Hi.pasos;
+
+					if (operador == TNodo.values()[5]) { // tres operandos
+						arbol.Hc = new Arbol(pasosMax-pasos);
+						creaArbol(arbol.Hc, prof_min - 1, prof_max - 1);
+						arbol.num_nodos += arbol.Hc.num_nodos;
+						pasos += arbol.Hc.pasos;
+					}
+					else Hc = null; // dos operandos
+
+					arbol.Hd = new Arbol(pasosMax-pasos);
+					creaArbol(arbol.Hd, prof_min - 1, prof_max - 1);
+					arbol.num_nodos += arbol.Hd.num_nodos;
+					if (operador != TNodo.values()[3]) pasos += arbol.Hd.pasos;
+					else {
+						if (arbol.Hi.pasos >= arbol.Hd.pasos)
+							pasos += arbol.Hi.pasos;
+						else pasos += arbol.Hd.pasos;
+					}
+				} // se genera operando
+				else { // generacion del subarbol de operando/terminal
+					TNodo operando = TNodo.values()[(int) (Math.random()*3)]; // simbolo de operando aleatorio
+					arbol.dato = operando;
+					arbol.num_nodos++;
+				}
+			}
+		}
+	}
+
 }
