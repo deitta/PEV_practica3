@@ -67,21 +67,17 @@ public class AlgoritmoGenetico {
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
-		int nGrupos = (gethMaxima() -1), tamGrupos = tamPob/nGrupos;
+		int nGrupos = (Cromosoma.gethMax() - 1), tamGrupos = tamPob/nGrupos;
 		
 		for (int i = 0; i < nGrupos; i++) {
-			for (int j = 0; j < tamGrupos/2; j++) {
-				
+			for (int j = 0; j < tamGrupos/2; j++) { // inicializacion creciente
+				pob[j+tamGrupos*i] = new Cromosoma(0, i+2);
+				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 			}
-			for (int j = tamGrupos/2; j < tamGrupos; j++) {
-				
+			for (int j = tamGrupos/2; j < tamGrupos; j++) { // inicializacion completa
+				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2);
+				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 			}
-		}
-
-		for (int i = 0; i < tamPob; i++) {
-			pob[i] = new Cromosoma();
-			pob[i].inicializaCromosoma();
-			pob[i].fitness = pob[i].evaluaCromosoma();
 		}
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
 			elite[i] = new Cromosoma();
