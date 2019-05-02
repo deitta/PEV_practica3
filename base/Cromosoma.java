@@ -1,7 +1,7 @@
 package base;
 
 public class Cromosoma {
-	protected Arbol[] arbol;
+	protected Arbol arbol;
 
 	protected double fitness; // aptitud
 	protected double punt; // puntRelat = aptitud / sumaAptitud
@@ -11,23 +11,16 @@ public class Cromosoma {
 	private boolean maximizar = true;
 	//protected boolean elite;
 
-	private int pasos = 400;
-	private int hMaxima = 10;
-	private final String[] terminales = { "Avanza", "Derecha", "Izquierda" };
-	private final String[] funciones = { "SiComida", "ProgN2", "ProgN3" };
-	private int dir = 1;
+	private final int pasosMax = 400;
+	private final static int hMax = 9; // profundidad maxima que puede tener el arbol para 400 hojas
+
+	public Cromosoma(int profMin, int profMax) {
+		arbol = new Arbol(pasosMax);
+		arbol.creaArbol(arbol, profMin, profMax);
+	}
 
 	public Cromosoma() {
-		inicializaCromosoma();
-	}
-
-	// ramped and half
-	public void inicializaCromosoma() {
-	}
-
-	// creo que sobra
-	public void insertar(int ciudad, int pos) {
-		this.genes[pos].ciudad = ciudad;
+		arbol = new Arbol(pasosMax);
 	}
 
 	public int evaluaCromosoma(){
@@ -49,9 +42,12 @@ public class Cromosoma {
 		punt = cromosoma.punt;
 		puntAcu = cromosoma.puntAcu;
 
-		hMaxima = cromosoma.hMaxima;
 		adaptacion = cromosoma.adaptacion;
 	}
+
+	public static int gira(int dir, int giro) { // giro=-1 -> izq, giro=1 -> dch
+		return (dir+giro+4)%4;
+	} 
 
 // SET & GET
 
@@ -71,12 +67,8 @@ public class Cromosoma {
 		return puntAcu;
 	}
 
-	public int gethMaxima() {
-		return hMaxima;
-	}
-
-	public void sethMaxima(int hMaxima) {
-		this.hMaxima = hMaxima;
+	public static int gethMax() {
+		return hMax;
 	}
 
 	public double getPunt() {
@@ -85,13 +77,7 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
-		String cromosoma = "(Adap: " + String.format("%.3f", adaptacion) + ", Fit: " + String.format("%.3f", fitness) + ")\n";
-		for (int i = 0; i < nGenes - 1; i++){
-			cromosoma += '[' + Integer.toString(i) + "] " + this.genes[i].toString() + ", ";
-		}
-		cromosoma += '[' + Integer.toString(nGenes - 1) + "] " + this.genes[nGenes - 1].toString();
-
-		return cromosoma;
+		return arbol.toString();
 	}
 
 	public double getAdptacion() {
