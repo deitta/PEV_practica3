@@ -5,16 +5,29 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import base.Arbol;
+import tablero.Hormiga.TDireccion;
 
 public class Tablero {
 	TEstado tablero[][];
 	static enum TEstado {
-		NADA, HAYCOMIDA, HORMIGA, HABIACOMIDA, CAMINADA;
+		NADA, HAYCOMIDA, HABIACOMIDA, CAMINADA;
+		
+		public String toString() {
+			switch(this) {
+			case CAMINADA:
+				return "=";
+			case HABIACOMIDA:
+				return "x";
+			case HAYCOMIDA:
+				return "#";
+			case NADA:
+				return "~";
+			default:
+				return "\nERROR\n";
+			}
+		}
 	}
 	Hormiga hor;
-	
-	String estado; //0->nada, #->sihaycomida, @->hormiga
-	
 
 	public Tablero() {
 		tablero = new TEstado[32][32];
@@ -22,7 +35,34 @@ public class Tablero {
 	}
 	
 	public void recorreTablero(Arbol arbol) {
-		
+		switch(arbol.getDato()) {
+		case AVANZA:
+			hor.avanza();
+			if (tablero[hor.ejeY][hor.ejeX] == TEstado.NADA) tablero[hor.ejeY][hor.ejeX] = TEstado.CAMINADA;
+			else tablero[hor.ejeY][hor.ejeX] = TEstado.HABIACOMIDA;
+			break;
+		case GIRA_DERECHA:
+			hor.giraDch();
+			break;
+		case GIRA_IZQUIERDA:
+			hor.giraIzq();
+			break;
+		case SIC:
+			Hormiga horAux = new Hormiga(hor.ejeX, hor.ejeY, hor.dir);
+			horAux.avanza();
+			if (tablero[horAux.ejeY][horAux.ejeX] == TEstado.HAYCOMIDA) recorreTablero(arbol.getHi());
+			else recorreTablero(arbol.getHd());
+			break;
+		case PROGN2:
+			recorreTablero(arbol.getHi());
+			recorreTablero(arbol.getHd());
+			break;
+		case PROGN3:
+			recorreTablero(arbol.getHi());
+			recorreTablero(arbol.getHc());
+			recorreTablero(arbol.getHd());
+			break;
+		}
 	}
 
 	public void restauraTablero() {
@@ -35,19 +75,19 @@ public class Tablero {
 
 			while(fr.read() != -1) {
 				switch(casilla) {
-				case '0': tablero[c][f] = TEstado.values()[0]; break;
-				case '#': tablero[c][f] = TEstado.values()[1]; break;
+				case '0': tablero[f][c] = TEstado.values()[0]; break;
+				case '#': tablero[f][c] = TEstado.values()[1]; break;
 				case '@': {
-					tablero[c][f] = TEstado.values()[2];
-					hor = new Hormiga(f, c, 1);
+					tablero[f][c] = TEstado.values()[2];
+					hor = new Hormiga(f, c, TDireccion.ESTE);
 					break;
 				}
 				default: System.out.println("ERROR LECTURA ARCHIVO");break;
 				}
 				
 				casilla = (char) fr.read();
-				f = (f+1)%32;
-				if (f == 0) c++;
+				c = (c+1)%32;
+				if (c == 0) f++;
 			}
 			tablero[31][31] = TEstado.values()[0];
 			
@@ -58,10 +98,10 @@ public class Tablero {
 	public String toString() {
 		String s = "";
 		
-		for (int i = 0; i < 32; i++) {
-			for (int j = 0; j < 32; j++) {
-				s += tablero[i][j].name();
-				if (j < 31) s += " ";
+		for (int f = 0; f < 32; f++) {
+			for (int c = 0; c < 32; c++) {
+				s += tablero[f][c].toString();
+				if (c < 31) s += " ";
 				else s += "\n";
 			}
 		}
@@ -72,6 +112,14 @@ public class Tablero {
 	// para depurar
 	public static void main(String args[]) {
 		Tablero t = new Tablero();
-		System.out.println(t.toString());
+		Arbol a = new Arbol(10);
+		a.creaArbol(a, 2, 3);
+		System.out.println("Arbol: " + a.toString());
+		System.out.println();
+		System.out.println("Tablero inicial:\n" + t.toString());
+		System.out.println();
+		
+		t.recorreTablero(a);
+		System.out.println("Tablero final:\n" + t.toString());	
 	}
 }
