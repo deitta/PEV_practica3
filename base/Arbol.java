@@ -34,23 +34,25 @@ public class Arbol {
 			arbol.setHi(new Arbol(arbol.pasosMax-arbol.pasos));
 			creaArbol(arbol.getHi(), prof_min - 1, prof_max - 1);
 			arbol.num_nodos += arbol.getHi().num_nodos;
-			if (operador != TNodo.values()[3]) arbol.pasos += arbol.getHi().pasos-1;
+			if (operador != TNodo.values()[3]) // != SIC
+				arbol.pasos += arbol.getHi().pasos-1;
 
-			if (operador == TNodo.values()[5]) { // tres operandos
-				arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos);
-				creaArbol(arbol.Hc, prof_min - 1, prof_max - 1);
-				arbol.num_nodos += arbol.Hc.num_nodos;
-				arbol.pasos += arbol.Hc.pasos-1;
+			if (operador == TNodo.values()[5]) { // == PROGN3
+				arbol.setHc(new Arbol(arbol.pasosMax-arbol.pasos));
+				creaArbol(arbol.getHc(), prof_min - 1, prof_max - 1);
+				arbol.num_nodos += arbol.getHc().num_nodos;
+				arbol.pasos += arbol.getHc().pasos-1;
 			}
 
-			arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos);
-			creaArbol(arbol.Hd, prof_min - 1, prof_max - 1);
-			arbol.num_nodos += arbol.Hd.num_nodos-1;
-			if (operador != TNodo.values()[3]) arbol.pasos += arbol.Hd.pasos-1;
+			arbol.setHd(new Arbol(arbol.pasosMax-arbol.pasos));
+			creaArbol(arbol.getHd(), prof_min - 1, prof_max - 1);
+			arbol.num_nodos += arbol.getHd().num_nodos-1;
+			if (operador != TNodo.values()[3]) // != SIC
+				arbol.pasos += arbol.getHd().pasos-1;
 			else {
-				if (arbol.getHi().pasos >= arbol.Hd.pasos)
+				if (arbol.getHi().pasos >= arbol.getHd().pasos)
 					arbol.pasos += arbol.getHi().pasos-1;
-				else arbol.pasos += arbol.Hd.pasos-1;
+				else arbol.pasos += arbol.getHd().pasos-1;
 			}
 		}
 		else { // prof_min = 0
@@ -73,20 +75,21 @@ public class Arbol {
 					arbol.setHi(new Arbol(arbol.pasosMax-arbol.pasos));
 					creaArbol(arbol.getHi(), prof_min, prof_max - 1);
 					arbol.num_nodos += arbol.getHi().num_nodos;
-					if (operador != TNodo.values()[3]) arbol.pasos += arbol.getHi().pasos;
+					if (operador != TNodo.values()[3]) // != SIC
+						arbol.pasos += arbol.getHi().pasos;
 
-					if (operador == TNodo.values()[5]) { // tres operandos
+					if (operador == TNodo.values()[5]) { // == PROGN3
 						arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos);
 						creaArbol(arbol.Hc, prof_min, prof_max - 1);
 						arbol.num_nodos += arbol.Hc.num_nodos;
 						arbol.pasos += arbol.Hc.pasos;
 					}
-					else Hc = null; // dos operandos
 
 					arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos);
 					creaArbol(arbol.Hd, prof_min, prof_max - 1);
 					arbol.num_nodos += arbol.Hd.num_nodos;
-					if (operador != TNodo.values()[3]) arbol.pasos += arbol.Hd.pasos;
+					if (operador != TNodo.values()[3]) // != SIC
+						arbol.pasos += arbol.Hd.pasos;
 					else {
 						if (arbol.getHi().pasos >= arbol.Hd.pasos)
 							arbol.pasos += arbol.getHi().pasos;
@@ -125,8 +128,8 @@ public class Arbol {
 	
 	// Para depurar
 	public static void main(String args[]) {
-		Arbol a = new Arbol(10);
-		a.creaArbol(a, 3, 3);
+		Arbol a = new Arbol(400);
+		a.creaArbol(a, 3, 9);
 /*			a.Hi = new Arbol();
 				a.Hi.Hi = new Arbol();
 				a.Hi.Hd = new Arbol();
