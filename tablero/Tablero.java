@@ -50,7 +50,8 @@ public class Tablero {
 		case SIC:
 			Hormiga horAux = new Hormiga(hor.ejeX, hor.ejeY, hor.dir);
 			horAux.avanza();
-			if (tablero[horAux.ejeY][horAux.ejeX] == TEstado.HAYCOMIDA) recorreTablero(arbol.getHi());
+			if (tablero[horAux.ejeY][horAux.ejeX] == TEstado.HAYCOMIDA)
+				recorreTablero(arbol.getHi());
 			else recorreTablero(arbol.getHd());
 			break;
 		case PROGN2:
@@ -112,8 +113,8 @@ public class Tablero {
 	// para depurar
 	public static void main(String args[]) {
 		Tablero t = new Tablero();
-		Arbol a = new Arbol(10);
-		a.creaArbol(a, 2, 3);
+		Arbol a = new Arbol(400);
+		a.creaArbol(a, 2, 9);
 		System.out.println("Arbol: " + a.toString());
 		System.out.println();
 		System.out.println("Tablero inicial:\n" + t.toString());
