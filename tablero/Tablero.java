@@ -8,20 +8,20 @@ import base.Arbol;
 import tablero.Hormiga.TDireccion;
 
 public class Tablero {
-	TEstado tablero[][];
-	static enum TEstado {
+	private TEstado tablero[][];
+	public static enum TEstado {
 		NADA, HAYCOMIDA, HABIACOMIDA, CAMINADA;
 		
 		public String toString() {
 			switch(this) {
 			case CAMINADA:
-				return "=";
+				return "-";
 			case HABIACOMIDA:
 				return "x";
 			case HAYCOMIDA:
 				return "#";
 			case NADA:
-				return "~";
+				return " ";
 			default:
 				return "\nERROR\n";
 			}
@@ -30,7 +30,7 @@ public class Tablero {
 	Hormiga hor;
 
 	public Tablero() {
-		tablero = new TEstado[32][32];
+		setTablero(new TEstado[32][32]);
 		restauraTablero();
 	}
 	
@@ -38,8 +38,8 @@ public class Tablero {
 		switch(arbol.getDato()) {
 		case AVANZA:
 			hor.avanza();
-			if (tablero[hor.ejeY][hor.ejeX] == TEstado.NADA) tablero[hor.ejeY][hor.ejeX] = TEstado.CAMINADA;
-			else tablero[hor.ejeY][hor.ejeX] = TEstado.HABIACOMIDA;
+			if (tablero[hor.ejeY][hor.ejeX] == TEstado.HAYCOMIDA || tablero[hor.ejeY][hor.ejeX] == TEstado.HABIACOMIDA) tablero[hor.ejeY][hor.ejeX] = TEstado.HABIACOMIDA;
+			else tablero[hor.ejeY][hor.ejeX] = TEstado.CAMINADA;
 			break;
 		case GIRA_DERECHA:
 			hor.giraDch();
@@ -76,10 +76,10 @@ public class Tablero {
 
 			while(fr.read() != -1) {
 				switch(casilla) {
-				case '0': tablero[f][c] = TEstado.values()[0]; break;
-				case '#': tablero[f][c] = TEstado.values()[1]; break;
+				case '0': getTablero()[f][c] = TEstado.values()[0]; break;
+				case '#': getTablero()[f][c] = TEstado.values()[1]; break;
 				case '@': {
-					tablero[f][c] = TEstado.values()[2];
+					getTablero()[f][c] = TEstado.values()[2];
 					hor = new Hormiga(f, c, TDireccion.ESTE);
 					break;
 				}
@@ -90,7 +90,7 @@ public class Tablero {
 				c = (c+1)%32;
 				if (c == 0) f++;
 			}
-			tablero[31][31] = TEstado.values()[0];
+			getTablero()[31][31] = TEstado.values()[0];
 			
 			fr.close();
 		} catch (IOException e) { e.printStackTrace(); }
@@ -101,7 +101,7 @@ public class Tablero {
 		
 		for (int f = 0; f < 32; f++) {
 			for (int c = 0; c < 32; c++) {
-				s += tablero[f][c].toString();
+				s += getTablero()[f][c].toString();
 				if (c < 31) s += " ";
 				else s += "\n";
 			}
@@ -122,5 +122,13 @@ public class Tablero {
 		
 		t.recorreTablero(a);
 		System.out.println("Tablero final:\n" + t.toString());	
+	}
+
+	public TEstado[][] getTablero() {
+		return tablero;
+	}
+
+	public void setTablero(TEstado tablero[][]) {
+		this.tablero = tablero;
 	}
 }

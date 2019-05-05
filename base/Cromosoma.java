@@ -1,7 +1,9 @@
 package base;
 
+import tablero.Tablero;
+
 public class Cromosoma {
-	protected Arbol arbol;
+	private Arbol arbol;
 
 	protected double fitness; // aptitud
 	protected double punt; // puntRelat = aptitud / sumaAptitud
@@ -15,28 +17,29 @@ public class Cromosoma {
 	private final static int hMax = 9; // profundidad maxima que puede tener el arbol para 400 hojas
 
 	public Cromosoma(int profMin, int profMax) {
-		arbol = new Arbol(pasosMax);
-		arbol.creaArbol(arbol, profMin, profMax);
+		setArbol(new Arbol(pasosMax));
+		getArbol().creaArbol(getArbol(), profMin, profMax);
 	}
 
-	public Cromosoma() {
-		arbol = new Arbol(pasosMax);
-	}
+	public Cromosoma() {}
 
-	public int evaluaCromosoma(){
-		int fitness = 0, ciudad = 25;
+	public double evaluaCromosoma(){
+		Tablero t = new Tablero();
 
-		for (int i = 0; i < nGenes; i++){
-			fitness += Ciudades.distanciaA(genes[i].ciudad, ciudad);
-			ciudad = genes[i].ciudad;
+		t.recorreTablero(getArbol());
+		
+		for (int i = 0; i < 32; i++){
+			for (int j = 0; j < 32; j++) {
+				if (t.getTablero()[i][j] == Tablero.TEstado.HABIACOMIDA) fitness++;
+			}
 		}
 
 		return fitness;
 	}
 
 	public void copiaCromosoma(Cromosoma cromosoma) {
-		//copia arbol
-		as
+		setArbol(new Arbol());
+		getArbol().copiaArbol(cromosoma.getArbol());
 
 		fitness = cromosoma.fitness;
 		punt = cromosoma.punt;
@@ -77,10 +80,20 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
-		return arbol.toString();
+		String s = "";
+		if (getArbol() != null) s = getArbol().toString();
+		return s;
 	}
 
 	public double getAdptacion() {
 		return adaptacion;
+	}
+
+	public Arbol getArbol() {
+		return arbol;
+	}
+
+	public void setArbol(Arbol arbol) {
+		this.arbol = arbol;
 	}
 }

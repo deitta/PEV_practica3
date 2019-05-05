@@ -5,6 +5,7 @@ import metodosMutacion.AlgoritmoMutacion;
 import metodosMutacion.FactoriaMutacion;
 import metodosSeleccion.AlgoritmoSeleccion;
 import metodosSeleccion.FactoriaSeleccion;
+import tablero.Tablero;
 
 public class AlgoritmoGenetico {
 	Cromosoma[] pob;
@@ -14,7 +15,6 @@ public class AlgoritmoGenetico {
 	int posMejor;
 	double probCruce; //si es menor cruza
 	double probMutacion; // si es menor muta
-	double tolerancia;  // precision
 
 	String seleccion;
 	String cruce;
@@ -40,7 +40,6 @@ public class AlgoritmoGenetico {
 		posMejor = 0;
 		probCruce = 0.6;
 		probMutacion = 0.05;
-		tolerancia = 0.001;
 		seleccion = "Ruleta";
 		cruce = "PMX";
 		mutacion = "Heuristica";
@@ -70,15 +69,20 @@ public class AlgoritmoGenetico {
 		int nGrupos = (Cromosoma.gethMax() - 1), tamGrupos = tamPob/nGrupos;
 		
 		for (int i = 0; i < nGrupos; i++) {
-			for (int j = 0; j < tamGrupos/2; j++) { // inicializacion creciente
+			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
 				pob[j+tamGrupos*i] = new Cromosoma(0, i+2);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 			}
-			for (int j = tamGrupos/2; j < tamGrupos; j++) { // inicializacion completa
+			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
 				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 			}
 		}
+		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
+			pob[i] = new Cromosoma(3, 9);
+			pob[i].fitness = pob[i].evaluaCromosoma();
+		}
+		
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
 			elite[i] = new Cromosoma();
 
@@ -273,7 +277,7 @@ public class AlgoritmoGenetico {
 
 			seleccion();
 			cruce();
-			mutacion();
+//			mutacion();
 
 			if (tamElite > 0) incluyeElite(tamElite);
 
@@ -295,6 +299,10 @@ public class AlgoritmoGenetico {
 				else generacionesAtascado++;
 			} else generacionActual++;
 		}
+		Tablero t = new Tablero();
+		System.out.println(t.toString());
+		t.recorreTablero(elMejor.getArbol());
+		System.out.println("El mejor:\n" + t.toString());
 	}
 
 
@@ -334,14 +342,6 @@ public class AlgoritmoGenetico {
 
 	public void setProbMutacion(double probMutacion) {
 		this.probMutacion = probMutacion;
-	}
-
-	public double getTolerancia() {
-		return tolerancia;
-	}
-
-	public void setTolerancia(double tolerancia) {
-		this.tolerancia = tolerancia;
 	}
 
 	public String getSeleccion() {
@@ -394,10 +394,6 @@ public class AlgoritmoGenetico {
 
 	public Cromosoma getElMejor() {
 		return elMejor;
-	}
-
-	public int getnGenes() {
-		return pob[0].getnGenes();
 	}
 
 	public String getContractividad() {

@@ -71,7 +71,6 @@ public class Main extends JFrame {
 		boton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String listaCiudades = " ";
 				plot.removeAllPlots();
 				AG.AlgoritmoGeneticoFuncion();
 				// define the legend position
@@ -104,11 +103,7 @@ public class Main extends JFrame {
 		ConfigPanel<AlgoritmoGenetico> config = new ConfigPanel<AlgoritmoGenetico>();
 		
 		// se pueden añadir las opciones de forma independiente, o "de seguido"; el resultado es el mismo.
-		config.addOption(new IntegerOption<AlgoritmoGenetico>(  // -- entero
-				"Poblacion", // etiqueta del campo
-				"tamaño de la poblacion",// 'tooltip' cuando pasas el puntero
-				"tamPob", // campo (espera que haya un getGrosor y un setGrosor)
-				1, 1000)) // min y max
+		config.addOption(new IntegerOption<AlgoritmoGenetico>("Poblacion", "tamaño de la poblacion", "tamPob", 1, 1000))
 			  .addOption(new IntegerOption<AlgoritmoGenetico>("Generaciones", "numero de generaciones", "numMaxGen", 1, 1000))
 			  .addOption(new IntegerOption<AlgoritmoGenetico>("Participantes", "numero de participantes para el metodo de seleccion", "participantes", 0, 100))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Cruce", "porcentaje de cruce", "probCruce", 0, 1))
