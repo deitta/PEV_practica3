@@ -93,7 +93,7 @@ public class Main extends JFrame {
 	
 	public ConfigPanel<AlgoritmoGenetico> creaPanelConfiguracion() {
 		String[] seleccion = new String[] { "Ruleta", "Torneo", "Restos", "Ranking", "Truncamiento", "Propio" };
-		String[] mutacion = new String[] { "Heuristica", "Insercion", "Intercambio", "Inversion", "Propio" };
+		String[] mutacion = new String[] { "Terminal", "Funcion", "Inicializacion" };
 		String[] contractividad = new String[] { "False", "True" };
 		Double[] elitismo = new Double[] { 0.0, 0.01, 0.02, 0.03 };
 		

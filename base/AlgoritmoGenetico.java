@@ -277,7 +277,7 @@ public class AlgoritmoGenetico {
 
 			seleccion();
 			cruce();
-//			mutacion();
+			mutacion();
 
 			if (tamElite > 0) incluyeElite(tamElite);
 

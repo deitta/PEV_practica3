@@ -158,6 +158,28 @@ public class Arbol {
 			return this;
 		}
 	}
+
+	public Arbol buscarHoja(int hoja) {
+		Arbol a;
+		if (hoja  > pasos) return null;
+		else if (hoja == 1) return this;
+		else {
+			if (this.Hi != null) {
+				a = this.Hi.buscarHoja(hoja);
+				if (a != null) return a;
+				hoja = hoja - this.Hi.pasos;
+				if (this.Hc != null) {
+					a = this.Hc.buscarHoja(hoja);
+					if (a != null) return a;
+					hoja = hoja - this.Hc.pasos;
+				}
+				a = this.Hd.buscarHoja(hoja);
+				if (a != null) return a;
+				hoja = hoja - this.Hd.pasos;
+			}
+			return this;
+		}
+	}
 	
 	public void sustituirSubarbol(int nodo, Arbol subarbol) {
 		Arbol a = this.buscarNodo(nodo);
@@ -239,5 +261,11 @@ public class Arbol {
 	}
 	public void setNum_nodos(int num_nodos) {
 		this.num_nodos = num_nodos;
+	}
+	public double getPasos() {
+		return pasos;
+	}
+	public void setPasos(int pasos) {
+		this.pasos = pasos;
 	}
 }
