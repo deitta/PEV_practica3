@@ -59,11 +59,9 @@ public class Main extends JFrame {
 		});
 		add(valido, BorderLayout.SOUTH);
 
-		final JLabel resultado = new JLabel(" Mejor resultado: ");
-		final JLabel ciudades1 = new JLabel(" Recorrido:");
+		final JLabel resultado = new JLabel(" Arbol mejor resultado(): ");
 		final JLabel ciudades2 = new JLabel("");
 		panelResultados.add(resultado, BorderLayout.SOUTH);
-		panelResultados.add(ciudades1, BorderLayout.NORTH);
 		panelResultados.add(ciudades2, BorderLayout.CENTER);
 		
 		// crea botones para calcular y mostrar el resultado del algoritmo
@@ -84,7 +82,7 @@ public class Main extends JFrame {
 				plot.addLinePlot("mejor de la generacion", x, AG.getGenMejor());
 				plot.addLinePlot("media de la generacion", x, AG.getGenMedia());
 				
-				resultado.setText(" Mejor resultado: " + AG.getElMejor().toString());
+				resultado.setText(" Arbol mejor resultado("+ AG.getElMejor().getFitness() +"): " + AG.getElMejor().toString());
 			}
 		});
 
@@ -95,7 +93,6 @@ public class Main extends JFrame {
 	
 	public ConfigPanel<AlgoritmoGenetico> creaPanelConfiguracion() {
 		String[] seleccion = new String[] { "Ruleta", "Torneo", "Restos", "Ranking", "Truncamiento", "Propio" };
-		String[] cruce = new String[] { "PMX", "OX", "Variante de OX", "CX", "ERX", "Ordinal", "Propio" };
 		String[] mutacion = new String[] { "Heuristica", "Insercion", "Intercambio", "Inversion", "Propio" };
 		String[] contractividad = new String[] { "False", "True" };
 		Double[] elitismo = new Double[] { 0.0, 0.01, 0.02, 0.03 };
@@ -109,7 +106,6 @@ public class Main extends JFrame {
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Cruce", "porcentaje de cruce", "probCruce", 0, 1))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Mutacion", "porcentaje de mutacion", "probMutacion", 0, 1))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Seleccion", "metodo de seleccion", "seleccion", seleccion))
-			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Cruce", "metodo de cruce para las funciones de 1 a 4", "cruce", cruce))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Mutacion", "metodo de mutacion", "mutacion", mutacion))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("% Elitismo", "porcentaje de la poblacion que forma la elite", "elitismo", elitismo))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Contractividad", "activa/desactiva la contractividad", "contractividad", contractividad))

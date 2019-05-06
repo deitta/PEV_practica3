@@ -25,6 +25,7 @@ public class Cromosoma {
 
 	public double evaluaCromosoma(){
 		Tablero t = new Tablero();
+		fitness = 0;
 
 		t.recorreTablero(getArbol());
 		

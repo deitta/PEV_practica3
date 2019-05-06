@@ -7,7 +7,7 @@ public class Arbol {
 	Arbol Hd; // hijo derecho
 	private int num_nodos; // numero de nodos
 	int profundidad; // profundidad del arbol
-	int pasos = 1; // numero de hojas/terminales del arbol
+	private int pasos = 1; // numero de hojas/terminales del arbol
 
 	private int pasosMax; // numero max de pasos que puede dar
 
@@ -155,12 +155,13 @@ public class Arbol {
 				if (a != null) return a;
 				nodo = nodo - this.Hd.num_nodos;
 			}
-			while(true) System.out.println("Atrapado en bucle!");
+			return this;
 		}
 	}
 	
-	public void sustituirSubarbol(int nodo_cruce, Arbol subarbol2) {
-		ascasd
+	public void sustituirSubarbol(int nodo, Arbol subarbol) {
+		Arbol a = this.buscarNodo(nodo);
+		if (a.pasos <= subarbol.pasos) a.copiaArbol(subarbol);
 	}
 
 	public String toString() {

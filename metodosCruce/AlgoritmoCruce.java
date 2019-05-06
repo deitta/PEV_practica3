@@ -44,19 +44,25 @@ public class AlgoritmoCruce {
 	private static void cruce(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
 		Arbol subarbol1 = new Arbol(), subarbol2 = new Arbol();
 		int num_nodos, nodo_cruce;
+		hijo1.setArbol(new Arbol());
+		hijo2.setArbol(new Arbol());
 
+		// elige un nodo aleatorio
 		num_nodos = Math.min(padre1.getArbol().getNum_nodos(), padre2.getArbol().getNum_nodos());
 		nodo_cruce = (int) (Math.random()*num_nodos+1);
+		
+		// copia los padres en los hijos
 		hijo1.getArbol().copiaArbol(padre1.getArbol());
 		hijo2.getArbol().copiaArbol(padre2.getArbol());
+		// copia el subarbol a partir del nodo seleccionado de cada padre
 		subarbol1.copiaArbol(hijo1.getArbol().buscarNodo(nodo_cruce));
 		subarbol2.copiaArbol(hijo2.getArbol().buscarNodo(nodo_cruce));
 		
-		// tener en cuenta el limite pasos
+		// sustituir en los hijos los subarboles si respetan el numero de pasos
 		hijo1.getArbol().sustituirSubarbol(nodo_cruce, subarbol2);
 		hijo2.getArbol().sustituirSubarbol(nodo_cruce, subarbol1);
-		hijo1.adaptacion = adaptacion(hijo1);
-		hijo2.adaptacion = adaptacion(hijo2);
-		…
+		
+		hijo1.evaluaCromosoma();
+		hijo2.evaluaCromosoma();
 	}
 }
