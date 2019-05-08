@@ -97,4 +97,8 @@ public class Cromosoma {
 	public void setArbol(Arbol arbol) {
 		this.arbol = arbol;
 	}
+
+	public int getPasosMax() {
+		return pasosMax;
+	}
 }
