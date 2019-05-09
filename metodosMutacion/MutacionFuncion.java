@@ -6,7 +6,6 @@ import base.Arbol.TNodo;
 
 public class MutacionFuncion implements AlgoritmoMutacion {
 
-	@Override
 	public void mutacion(Cromosoma[] pob, double probMutacion, int tamPob) {
 		boolean mutado;
 		double prob;
@@ -42,6 +41,9 @@ public class MutacionFuncion implements AlgoritmoMutacion {
 						a.setDato(n);
 						mutado = true;
 					}
+					break;
+				default:
+					System.out.println("ERROR: en la mutacion por funcion.");
 					break;			
 				}
 			}

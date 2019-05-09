@@ -103,9 +103,9 @@ public class Arbol {
 				}
 			}
 		}
-		if (arbol.getHi() != null) {
-			if (arbol.getHi().profundidad >= arbol.Hd.profundidad && (arbol.Hc == null || arbol.getHi().profundidad >= arbol.Hc.profundidad))
-				arbol.profundidad = arbol.getHi().profundidad;
+		if (arbol.Hi != null) {
+			if (arbol.Hi.profundidad >= arbol.Hd.profundidad && (arbol.Hc == null || arbol.Hi.profundidad >= arbol.Hc.profundidad))
+				arbol.profundidad = arbol.Hi.profundidad;
 			else if(arbol.Hc == null || arbol.Hd.profundidad >= arbol.Hc.profundidad)
 				arbol.profundidad = arbol.Hd.profundidad;
 			else arbol.profundidad = arbol.Hc.profundidad;
@@ -114,6 +114,7 @@ public class Arbol {
 	}
 
 	public void copiaArbol(Arbol arbol) {
+//		this = new Arbol();
 		this.dato = arbol.dato;
 		if (arbol.Hi != null) {
 			this.Hi = new Arbol();
@@ -183,9 +184,37 @@ public class Arbol {
 	
 	public void sustituirSubarbol(int nodo, Arbol subarbol) {
 		Arbol a = this.buscarNodo(nodo);
-		if (a.pasos <= subarbol.pasos) a.copiaArbol(subarbol);
+		if (this.pasosMax - this.pasos >= subarbol.pasos) a.copiaArbol(subarbol);
+		actualizaRama(nodo, a, subarbol);
 	}
 
+	private void actualizaRama(int nodo, Arbol viejo, Arbol nuevo) {
+		if (nodo < num_nodos && nodo > 0) {
+			num_nodos = num_nodos - viejo.num_nodos + nuevo.num_nodos;
+			pasos = pasos - viejo.pasos + nuevo.pasos;
+			if (this.Hi != null) {
+				nodo--;
+				this.Hi.actualizaRama(nodo, viejo, nuevo);
+				nodo -= this.Hi.num_nodos;
+				if (this.Hc != null) {
+					this.Hc.actualizaRama(nodo, viejo, nuevo);
+					nodo -= this.Hc.num_nodos;
+				}
+				this.Hd.actualizaRama(nodo, viejo, nuevo);
+				nodo -= this.Hd.num_nodos;
+			}
+
+			if (this.Hi != null) {
+				if (this.Hi.profundidad >= this.Hd.profundidad && (this.Hc == null || this.Hi.profundidad >= this.Hc.profundidad))
+					this.profundidad = this.Hi.profundidad;
+				else if(this.Hc == null || this.Hd.profundidad >= this.Hc.profundidad)
+					this.profundidad = this.Hd.profundidad;
+				else this.profundidad = this.Hc.profundidad;
+				this.profundidad++;
+			}
+		}
+	}
+	
 	public String toString() {
 		String s;
 		
