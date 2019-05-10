@@ -17,7 +17,7 @@ public class MutacionTerminal implements AlgoritmoMutacion {
 			prob = Math.random();
 			// mutan los genes con prob<probMutacion
 			if (prob < probMutacion){
-				tMutar = (int) (Math.random()*pob[i].getArbol().getPasos());
+				tMutar = (int) (Math.random()*pob[i].getArbol().getPasos()+1);
 				
 				Arbol a = new Arbol();
 				a = pob[i].getArbol().buscarHoja(tMutar);

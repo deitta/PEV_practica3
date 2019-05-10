@@ -11,7 +11,7 @@ public class Tablero {
 	private TEstado tablero[][];
 	public static enum TEstado {
 		NADA, HAYCOMIDA, HABIACOMIDA, CAMINADA;
-		
+
 		public String toString() {
 			switch(this) {
 			case CAMINADA:
@@ -33,7 +33,7 @@ public class Tablero {
 		setTablero(new TEstado[32][32]);
 		restauraTablero();
 	}
-	
+
 	public void recorreTablero(Arbol arbol) {
 		switch(arbol.getDato()) {
 		case AVANZA:
@@ -73,32 +73,35 @@ public class Tablero {
 			fr = new FileReader (archivo);
 			int f = 0, c = 0; // f -> fila, c -> columna
 			char casilla = (char) fr.read();
-
-			while(fr.read() != -1) {
+			
+			int aux = fr.read();
+			while(aux != -1) {
 				switch(casilla) {
 				case '0': getTablero()[f][c] = TEstado.values()[0]; break;
 				case '#': getTablero()[f][c] = TEstado.values()[1]; break;
-				case '@': {
+				case '@':
 					getTablero()[f][c] = TEstado.values()[2];
 					hor = new Hormiga(f, c, TDireccion.ESTE);
 					break;
-				}
 				default: System.out.println("ERROR LECTURA ARCHIVO");break;
 				}
-				
+
 				casilla = (char) fr.read();
 				c = (c+1)%32;
 				if (c == 0) f++;
+				aux = fr.read();
+				if(aux == '\r')
+					aux = fr.read();
 			}
 			getTablero()[31][31] = TEstado.values()[0];
-			
+
 			fr.close();
 		} catch (IOException e) { e.printStackTrace(); }
 	}
-	
+
 	public String toString() {
 		String s = "";
-		
+
 		for (int f = 0; f < 32; f++) {
 			for (int c = 0; c < 32; c++) {
 				s += getTablero()[f][c].toString();
@@ -106,20 +109,20 @@ public class Tablero {
 				else s += "\n";
 			}
 		}
-		
+
 		return s;
 	}
-	
+
 	// para depurar
 	public static void main(String args[]) {
 		Tablero t = new Tablero();
-		Arbol a = new Arbol(400);
+		Arbol a = new Arbol(400, 0);
 		a.creaArbol(a, 2, 9);
 		System.out.println("Arbol: " + a.toString());
 		System.out.println();
 		System.out.println("Tablero inicial:\n" + t.toString());
 		System.out.println();
-		
+
 		t.recorreTablero(a);
 		System.out.println("Tablero final:\n" + t.toString());	
 	}

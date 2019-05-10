@@ -15,6 +15,7 @@ public class AlgoritmoGenetico {
 	int posMejor;
 	double probCruce; //si es menor cruza
 	double probMutacion; // si es menor muta
+	int hMax;
 
 	String seleccion;
 	String cruce;
@@ -36,16 +37,18 @@ public class AlgoritmoGenetico {
 
 	public AlgoritmoGenetico() {
 		tamPob = 100;
-		numMaxGen = 100;
+		numMaxGen = 300;
 		posMejor = 0;
 		probCruce = 0.6;
 		probMutacion = 0.05;
+		hMax = 4;
 		seleccion = "Ruleta";
 		cruce = "PMX";
 		mutacion = "Heuristica";
 		participantes = 3;
 		elitismo = 0;
 		contractividad = false;
+		
 
 		// en principio lo de abajo no es necesario pero si se quita da error por toString
 		pob = new Cromosoma[tamPob];
@@ -66,20 +69,20 @@ public class AlgoritmoGenetico {
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
-		int nGrupos = (Cromosoma.gethMax() - 1), tamGrupos = tamPob/nGrupos;
+		int nGrupos = (hMax - 1), tamGrupos = tamPob/nGrupos;
 		
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
-				pob[j+tamGrupos*i] = new Cromosoma(0, i+2);
+				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 			}
 			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
-				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2);
+				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 			}
 		}
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
-			pob[i] = new Cromosoma(3, 9);
+			pob[i] = new Cromosoma(3, 9, hMax);
 			pob[i].fitness = pob[i].evaluaCromosoma();
 		}
 		
@@ -303,6 +306,7 @@ public class AlgoritmoGenetico {
 		System.out.println(t.toString());
 		t.recorreTablero(elMejor.getArbol());
 		System.out.println("El mejor:\n" + t.toString());
+		System.out.println("Altura: " + elMejor.getArbol().getAltura());
 	}
 
 
@@ -412,7 +416,13 @@ public class AlgoritmoGenetico {
 		return generacionActual;
 	}
 
+	public int gethMax() {
+		return hMax;
+	}
 
+	public void sethMax(int hMax) {
+		this.hMax = hMax;
+	}
 
 	// Para depurar
 	public String toString(){

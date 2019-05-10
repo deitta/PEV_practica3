@@ -14,11 +14,12 @@ public class Cromosoma {
 	//protected boolean elite;
 
 	private final int pasosMax = 400;
-	private final static int hMax = 9; // profundidad maxima que puede tener el arbol para 400 hojas
+	private int hMax; // profundidad maxima que puede tener el arbol para 400 hojas
 
-	public Cromosoma(int profMin, int profMax) {
-		setArbol(new Arbol(pasosMax));
+	public Cromosoma(int profMin, int profMax, int hMax) {
+		setArbol(new Arbol(pasosMax, 0));
 		getArbol().creaArbol(getArbol(), profMin, profMax);
+		this.hMax = hMax;
 	}
 
 	public Cromosoma() {}
@@ -47,6 +48,7 @@ public class Cromosoma {
 		puntAcu = cromosoma.puntAcu;
 
 		adaptacion = cromosoma.adaptacion;
+		hMax = cromosoma.hMax;
 	}
 
 	public static int gira(int dir, int giro) { // giro=-1 -> izq, giro=1 -> dch
@@ -71,19 +73,8 @@ public class Cromosoma {
 		return puntAcu;
 	}
 
-	public static int gethMax() {
-		return hMax;
-	}
-
 	public double getPunt() {
 		return punt;
-	}
-
-	// Para la depuracion
-	public String toString(){
-		String s = "";
-		if (getArbol() != null) s = getArbol().toString();
-		return s;
 	}
 
 	public double getAdptacion() {
@@ -100,5 +91,16 @@ public class Cromosoma {
 
 	public int getPasosMax() {
 		return pasosMax;
+	}
+
+	public int getHmax() {
+		return hMax;
+	}
+
+	// Para la depuracion
+	public String toString(){
+		String s = "";
+		if (getArbol() != null) s = getArbol().toString();
+		return s;
 	}
 }

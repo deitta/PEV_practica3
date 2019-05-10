@@ -101,7 +101,8 @@ public class Main extends JFrame {
 		
 		// se pueden añadir las opciones de forma independiente, o "de seguido"; el resultado es el mismo.
 		config.addOption(new IntegerOption<AlgoritmoGenetico>("Poblacion", "tamaño de la poblacion", "tamPob", 1, 1000))
-			  .addOption(new IntegerOption<AlgoritmoGenetico>("Generaciones", "numero de generaciones", "numMaxGen", 1, 1000))
+		  	  .addOption(new IntegerOption<AlgoritmoGenetico>("Generaciones", "numero de generaciones", "numMaxGen", 1, 1000))
+		  	  .addOption(new IntegerOption<AlgoritmoGenetico>("Altura maxima", "Altura maxima del arbol", "hMax", 1, 10))
 			  .addOption(new IntegerOption<AlgoritmoGenetico>("Participantes", "numero de participantes para el metodo de seleccion", "participantes", 0, 100))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Cruce", "porcentaje de cruce", "probCruce", 0, 1))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Mutacion", "porcentaje de mutacion", "probMutacion", 0, 1))
