@@ -46,23 +46,22 @@ public class AlgoritmoCruce {
 		int num_nodos, nodo_cruce;
 		hijo1.setArbol(new Arbol());
 		hijo2.setArbol(new Arbol());
+		// copia los padres en los hijos
+		hijo1.getArbol().copiaArbol(padre1.getArbol());
+		hijo2.getArbol().copiaArbol(padre2.getArbol());
 
 		// elige un nodo aleatorio
 		num_nodos = Math.min(padre1.getArbol().getNum_nodos(), padre2.getArbol().getNum_nodos());
 		nodo_cruce = (int) (Math.random()*num_nodos+1);
-		
-		// copia los padres en los hijos
-		hijo1.getArbol().copiaArbol(padre1.getArbol());
-		hijo2.getArbol().copiaArbol(padre2.getArbol());
+
 		// copia el subarbol a partir del nodo seleccionado de cada padre
-		subarbol1.copiaArbol(hijo1.getArbol().buscarNodo(nodo_cruce));
-		subarbol2.copiaArbol(hijo2.getArbol().buscarNodo(nodo_cruce));
+		subarbol1.copiaArbol(padre1.getArbol().buscarNodo(nodo_cruce));
+		subarbol2.copiaArbol(padre2.getArbol().buscarNodo(nodo_cruce));
 		
-		// sustituir en los hijos los subarboles si respetan el numero de pasos
-		hijo1.getArbol().sustituirSubarbol(nodo_cruce, subarbol2);
-		hijo2.getArbol().sustituirSubarbol(nodo_cruce, subarbol1);
-		
-		hijo1.evaluaCromosoma();
-		hijo2.evaluaCromosoma();
+		if (subarbol1.getAltura() <= padre2.getHmax()-subarbol2.getProfundidad() && subarbol2.getAltura() <= padre1.getHmax()-subarbol1.getProfundidad()) {
+			// sustituir en los hijos los subarboles si respetan el numero de pasos
+			hijo1.getArbol().sustituirSubarbol(nodo_cruce, subarbol2);
+			hijo2.getArbol().sustituirSubarbol(nodo_cruce, subarbol1);
+		}
 	}
 }

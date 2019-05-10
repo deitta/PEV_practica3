@@ -35,34 +35,24 @@ public class Arbol {
 			// se generan los hijos
 			arbol.Hi = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
 			creaArbol(arbol.Hi, prof_min - 1, prof_max - 1);
-			arbol.num_nodos = arbol.num_nodos + arbol.Hi.num_nodos;
 			if (operador != TNodo.values()[3]) // != SIC
 				arbol.pasos += arbol.Hi.pasos-1;
 
 			if (operador == TNodo.values()[5]) { // == PROGN3
 				arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
 				creaArbol(arbol.Hc, prof_min - 1, prof_max - 1);
-				arbol.num_nodos = arbol.num_nodos + arbol.Hc.num_nodos;
 				arbol.pasos += arbol.Hc.pasos-1;
 			}
 
 			arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
 			creaArbol(arbol.Hd, prof_min - 1, prof_max - 1);
-			arbol.num_nodos = arbol.num_nodos + arbol.Hd.num_nodos-1;
-			if (operador != TNodo.values()[3]) // != SIC
-				arbol.pasos += arbol.Hd.pasos-1;
-			else {
-				if (arbol.Hi.pasos >= arbol.Hd.pasos)
-					arbol.pasos += arbol.Hi.pasos-1;
-				else arbol.pasos += arbol.Hd.pasos-1;
-			}
 		}
 		else { // prof_min = 0
 			if(prof_max == 0 || arbol.pasosMax <= 0) { // solo puede ser hoja
 				// generacion del subarbol de operando/terminal
 				TNodo operando = TNodo.values()[(int) (Math.random()*3)]; // simbolo de operando aleatorio
 				arbol.dato = operando;
-				arbol.num_nodos++;
+				arbol.num_nodos = 1;
 			}
 			else { // se decide aleatoriamente operando/terminal u operador/funcion
 				int tipo = (int) Math.round(Math.random());
@@ -73,45 +63,47 @@ public class Arbol {
 					else operador = TNodo.values()[(int) (Math.random()*2)+3]; // operando = SIC/PROGN2
 					arbol.dato = operador;
 					arbol.pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
+					
 					// se generan los hijos
 					arbol.setHi(new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1));
 					creaArbol(arbol.getHi(), prof_min, prof_max - 1);
-					arbol.num_nodos = arbol.num_nodos + arbol.getHi().num_nodos;
 					if (operador != TNodo.values()[3]) // != SIC
-						arbol.pasos += arbol.getHi().pasos;
+						arbol.pasos += arbol.getHi().pasos-1;
 
 					if (operador == TNodo.values()[5]) { // == PROGN3
 						arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
 						creaArbol(arbol.Hc, prof_min, prof_max - 1);
-						arbol.num_nodos = arbol.num_nodos + arbol.Hc.num_nodos;
-						arbol.pasos += arbol.Hc.pasos;
+						arbol.pasos += arbol.Hc.pasos-1;
 					}
 
 					arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
 					creaArbol(arbol.Hd, prof_min, prof_max - 1);
-					arbol.num_nodos = arbol.num_nodos + arbol.Hd.num_nodos;
-					if (operador != TNodo.values()[3]) // != SIC
-						arbol.pasos += arbol.Hd.pasos;
-					else {
-						if (arbol.getHi().pasos >= arbol.Hd.pasos)
-							arbol.pasos += arbol.getHi().pasos;
-						else arbol.pasos += arbol.Hd.pasos;
-					}
 				} // se genera operando
 				else { // generacion del subarbol de operando/terminal
 					TNodo operando = TNodo.values()[(int) (Math.random()*3)]; // simbolo de operando aleatorio
 					arbol.dato = operando;
-					arbol.num_nodos++;
+					arbol.num_nodos = 1;
 				}
 			}
 		}
-		if (arbol.Hi != null) {
+		if (arbol.esFuncion()) {
 			if (arbol.Hi.altura >= arbol.Hd.altura && (arbol.Hc == null || arbol.Hi.altura >= arbol.Hc.altura))
 				arbol.altura = arbol.Hi.altura;
 			else if(arbol.Hc == null || arbol.Hd.altura >= arbol.Hc.altura)
 				arbol.altura = arbol.Hd.altura;
 			else arbol.altura = arbol.Hc.altura;
 			arbol.altura++;
+			
+			arbol.num_nodos = 1 + arbol.Hi.num_nodos + arbol.Hd.num_nodos;
+			if (arbol.Hc != null) arbol.num_nodos += arbol.Hc.num_nodos;
+			
+			if (arbol.dato != TNodo.values()[3]) // != SIC
+				arbol.pasos += arbol.Hd.pasos-1;
+			else {
+				if (arbol.getHi().pasos >= arbol.Hd.pasos)
+					arbol.pasos += arbol.getHi().pasos-1;
+				else arbol.pasos += arbol.Hd.pasos-1;
+			}
 		}
 	}
 
@@ -210,6 +202,7 @@ public class Arbol {
 		Arbol a = this.buscarNodo(nodo);
 		if (this.pasosMax - this.pasos >= subarbol.pasos) {
 			a.copiaArbol(subarbol);
+			profundidad = 0;
 			actualizaRama(nodo, a, subarbol);
 			return true;
 		}
@@ -222,17 +215,18 @@ public class Arbol {
 			pasos = pasos - viejo.pasos + nuevo.pasos;
 			if (this.Hi != null) {
 				nodo--;
+				this.Hi.profundidad = profundidad + 1;
 				this.Hi.actualizaRama(nodo, viejo, nuevo);
 				nodo -= this.Hi.num_nodos;
 				if (this.Hc != null) {
+					this.Hc.profundidad = profundidad + 1;
 					this.Hc.actualizaRama(nodo, viejo, nuevo);
 					nodo -= this.Hc.num_nodos;
 				}
+				this.Hd.profundidad = profundidad + 1;
 				this.Hd.actualizaRama(nodo, viejo, nuevo);
 				nodo -= this.Hd.num_nodos;
-			}
 
-			if (this.Hi != null) {
 				if (this.Hi.altura >= this.Hd.altura && (this.Hc == null || this.Hi.altura >= this.Hc.altura))
 					this.altura = this.Hi.altura;
 				else if(this.Hc == null || this.Hd.altura >= this.Hc.altura)
@@ -254,7 +248,7 @@ public class Arbol {
 			return true;
 		return false;
 	}
-	
+
 	public String toString() {
 		String s;
 		
@@ -271,7 +265,7 @@ public class Arbol {
 	// Para depurar
 	public static void main(String args[]) {
 		Arbol a = new Arbol(400, 0);
-		a.creaArbol(a, 3, 9);
+		a.creaArbol(a, 2, 4);
 /*			a.Hi = new Arbol();
 				a.Hi.Hi = new Arbol();
 				a.Hi.Hd = new Arbol();
