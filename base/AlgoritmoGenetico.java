@@ -5,7 +5,6 @@ import metodosMutacion.AlgoritmoMutacion;
 import metodosMutacion.FactoriaMutacion;
 import metodosSeleccion.AlgoritmoSeleccion;
 import metodosSeleccion.FactoriaSeleccion;
-import tablero.Tablero;
 
 public class AlgoritmoGenetico {
 	Cromosoma[] pob;
@@ -74,7 +73,7 @@ public class AlgoritmoGenetico {
 		
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
-				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
+				pob[j+tamGrupos*i] = new Cromosoma(1, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}

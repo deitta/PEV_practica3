@@ -49,8 +49,8 @@ public class AlgoritmoCruce {
 		hijo1.setArbol(new Arbol());
 		hijo2.setArbol(new Arbol());
 		// copia los padres en los hijos
-		hijo1.getArbol().copiaArbol(padre1.getArbol());
-		hijo2.getArbol().copiaArbol(padre2.getArbol());
+		hijo1.copiaCromosoma(padre1);
+		hijo2.copiaCromosoma(padre2);
 
 		// elige un nodo aleatorio
 		num_nodos = Math.min(padre1.getArbol().getNum_nodos(), padre2.getArbol().getNum_nodos());
