@@ -76,15 +76,12 @@ public class AlgoritmoGenetico {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
 				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
-				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
 				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
-				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 		}
-		mediaTamPob = mediaTamPob / tamPob;
 		
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
 			pob[i] = new Cromosoma(3, 9, hMax);
@@ -279,8 +276,11 @@ public class AlgoritmoGenetico {
 		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
 		generacionActual = 0;
+		mediaTamPob = 0;
 		
 		inicializaPoblacion();
+		
+		calculaMedia();
 
 		if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 		else adaptarMinimizacion(tamElite);

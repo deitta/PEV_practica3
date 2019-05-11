@@ -201,6 +201,7 @@ public class Arbol {
 		}
 	}
 	
+	// sutituye en el arbol this el nodo nodo por subarbol
 	public boolean sustituirSubarbol(int nodo, Arbol subarbol) {
 		Arbol a = this.buscarNodo(nodo);
 		if (this.pasosMax - this.pasos >= subarbol.pasos) {

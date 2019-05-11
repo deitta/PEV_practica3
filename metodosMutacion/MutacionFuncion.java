@@ -9,7 +9,7 @@ public class MutacionFuncion implements AlgoritmoMutacion {
 	public void mutacion(Cromosoma[] pob, double probMutacion, int tamPob) {
 		boolean mutado;
 		double prob;
-		int tMutar;
+		int fMutar;
 
 		for (int i = 0; i < tamPob; i++) {
 			mutado = false;
@@ -17,9 +17,9 @@ public class MutacionFuncion implements AlgoritmoMutacion {
 
 			if (prob < probMutacion && pob[i].getArbol().esFuncion()){
 				int numFunciones = (int) (pob[i].getArbol().getNum_nodos() - pob[i].getArbol().getPasos());
-				tMutar = (int) (Math.random()*numFunciones + 1);
+				fMutar = (int) (Math.random()*numFunciones + 1);
 				Arbol a = new Arbol();
-				a = pob[i].getArbol().buscarFuncion(tMutar);
+				a = pob[i].getArbol().buscarFuncion(fMutar);
 
 				if(a.getDato() == TNodo.SIC) {
 					a.setDato(TNodo.PROGN2); //tiene 2 arg igual que PROGN2
