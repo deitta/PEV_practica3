@@ -16,6 +16,7 @@ public class AlgoritmoGenetico {
 	double probCruce; //si es menor cruza
 	double probMutacion; // si es menor muta
 	int hMax;
+	static int mediaTamPob;
 
 	String seleccion;
 	String cruce;
@@ -75,12 +76,16 @@ public class AlgoritmoGenetico {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
 				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
 				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2, hMax);
 				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 		}
+		mediaTamPob = mediaTamPob / tamPob;
+		
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
 			pob[i] = new Cromosoma(3, 9, hMax);
 			pob[i].fitness = pob[i].evaluaCromosoma();
@@ -263,6 +268,13 @@ public class AlgoritmoGenetico {
 		}
 	}
 
+	private void calculaMedia() {
+		mediaTamPob = 0;
+		for (int i = 0; i < tamPob; i++)
+			mediaTamPob += pob[i].getArbol().getNum_nodos();
+		mediaTamPob = mediaTamPob / tamPob;
+	}
+	
 	public void AlgoritmoGeneticoFuncion(){
 		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
@@ -281,6 +293,8 @@ public class AlgoritmoGenetico {
 			seleccion();
 			cruce();
 			mutacion();
+			
+			calculaMedia();
 
 			if (tamElite > 0) incluyeElite(tamElite);
 
@@ -302,10 +316,6 @@ public class AlgoritmoGenetico {
 				else generacionesAtascado++;
 			} else generacionActual++;
 		}
-		Tablero t = new Tablero();
-		System.out.println(t.toString());
-		t.recorreTablero(elMejor.getArbol());
-		System.out.println("El mejor:\n" + t.toString());
 		System.out.println("Altura: " + elMejor.getArbol().getAltura());
 	}
 

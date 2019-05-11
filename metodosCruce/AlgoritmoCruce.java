@@ -36,8 +36,10 @@ public class AlgoritmoCruce {
 			hijo2.setFitness(hijo2.evaluaCromosoma());
 
 			// los nuevos individuos sustituyen a sus progenitores
-			pob[selCruce[i]] = hijo1;
-			pob[selCruce[i+1]] = hijo2;
+			if (hijo1.getFitness() > pob[selCruce[i]].getFitness())
+				pob[selCruce[i]] = hijo1;
+			if (hijo2.getFitness() > pob[selCruce[i+1]].getFitness())
+				pob[selCruce[i+1]] = hijo2;
 		}
 	}
 
@@ -57,7 +59,7 @@ public class AlgoritmoCruce {
 		// copia el subarbol a partir del nodo seleccionado de cada padre
 		subarbol1.copiaArbol(padre1.getArbol().buscarNodo(nodo_cruce));
 		subarbol2.copiaArbol(padre2.getArbol().buscarNodo(nodo_cruce));
-		
+
 		if (subarbol1.getAltura() <= padre2.getHmax()-subarbol2.getProfundidad() && subarbol2.getAltura() <= padre1.getHmax()-subarbol1.getProfundidad()) {
 			// sustituir en los hijos los subarboles si respetan el numero de pasos
 			hijo1.getArbol().sustituirSubarbol(nodo_cruce, subarbol2);

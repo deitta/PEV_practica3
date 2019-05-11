@@ -19,7 +19,8 @@ public class SeleccionTorneo implements AlgoritmoSeleccion {
 			mejor = pob[posMejor];
 			for (int j = 1; j < nParticipantes; j++){
 				participante = ((int) (Math.random() * tamPob)); // si el azar lo quiere puede haber varios participantes iguales
-				if (pob[participante].getAdptacion() > pob[posMejor].getAdptacion()){
+				if (pob[participante].getAdptacion() >= pob[posMejor].getAdptacion()
+						&& pob[participante].getArbol().getAltura() < pob[posMejor].getArbol().getAltura()){
 					posMejor = participante;
 					mejor = pob[participante];
 				}

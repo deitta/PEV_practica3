@@ -104,6 +104,9 @@ public class Arbol {
 					arbol.pasos += arbol.getHi().pasos-1;
 				else arbol.pasos += arbol.Hd.pasos-1;
 			}
+			
+			arbol.pasos = arbol.Hi.pasos + arbol.Hd.pasos;
+			if (arbol.Hc != null) arbol.pasos += arbol.Hc.pasos;
 		}
 	}
 
@@ -261,6 +264,23 @@ public class Arbol {
 		
 		return s;
 	}
+	
+//	public String toString(String guiones, String espacios) {
+//		String s = "";
+//		
+//		if (this.Hi != null) {
+//			s += espacios+"|-" + "(" + Integer.toString(this.Hi.getNum_nodos()) + ")";
+//			if (this.Hc != null) s += "("+Integer.toString(this.Hc.getNum_nodos()) + ")";
+//			else s += "   ";
+//			s += "("+Integer.toString(this.Hd.getNum_nodos()) + ")\n";
+//			
+//			s += this.Hi.toString(guiones+"-", espacios+"   ");
+//			if (this.Hc != null) s += this.Hc.toString(guiones+"-", espacios+"     ");
+//			s += this.Hd.toString(guiones+"-", espacios+"         ");
+//		}
+//		
+//		return s;
+//	}
 	
 	// Para depurar
 	public static void main(String args[]) {

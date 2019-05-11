@@ -8,6 +8,7 @@ public class Cromosoma {
 	protected double fitness; // aptitud
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
+	protected int numBocados; // aptitud
 
 	protected double adaptacion;
 	private boolean maximizar = true;
@@ -27,15 +28,23 @@ public class Cromosoma {
 	public double evaluaCromosoma(){
 		Tablero t = new Tablero();
 		fitness = 0;
+		numBocados = 0;
 
 		t.recorreTablero(getArbol());
 		
 		for (int i = 0; i < 32; i++){
 			for (int j = 0; j < 32; j++) {
-				if (t.getTablero()[i][j] == Tablero.TEstado.HABIACOMIDA) fitness++;
+				if (t.getTablero()[i][j] == Tablero.TEstado.HABIACOMIDA) {
+					fitness++;
+					numBocados++;
+				}
 			}
 		}
-
+		// penaliza a los arboles con altura mayor a hMax
+		if (hMax < arbol.getAltura()) fitness -= arbol.getAltura() - hMax;
+		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0)
+			fitness -= 0.25*arbol.getNum_nodos();
+		
 		return fitness;
 	}
 
@@ -46,6 +55,7 @@ public class Cromosoma {
 		fitness = cromosoma.fitness;
 		punt = cromosoma.punt;
 		puntAcu = cromosoma.puntAcu;
+		numBocados = cromosoma.numBocados;
 
 		adaptacion = cromosoma.adaptacion;
 		hMax = cromosoma.hMax;
@@ -102,5 +112,9 @@ public class Cromosoma {
 		String s = "";
 		if (getArbol() != null) s = getArbol().toString();
 		return s;
+	}
+
+	public int getNumBocados() {
+		return numBocados;
 	}
 }
