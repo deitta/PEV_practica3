@@ -33,18 +33,18 @@ public class Arbol {
 			arbol.pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
 			
 			// se generan los hijos
-			arbol.Hi = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
+			arbol.Hi = new Arbol(arbol.pasosMax-arbol.pasos, arbol.getProfundidad()+1);
 			creaArbol(arbol.Hi, prof_min - 1, prof_max - 1);
 			if (operador != TNodo.values()[3]) // != SIC
 				arbol.pasos += arbol.Hi.pasos-1;
 
 			if (operador == TNodo.values()[5]) { // == PROGN3
-				arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
+				arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos, arbol.getProfundidad()+1);
 				creaArbol(arbol.Hc, prof_min - 1, prof_max - 1);
 				arbol.pasos += arbol.Hc.pasos-1;
 			}
 
-			arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
+			arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos, arbol.getProfundidad()+1);
 			creaArbol(arbol.Hd, prof_min - 1, prof_max - 1);
 		}
 		else { // prof_min = 0
@@ -65,18 +65,18 @@ public class Arbol {
 					arbol.pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
 					
 					// se generan los hijos
-					arbol.setHi(new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1));
+					arbol.setHi(new Arbol(arbol.pasosMax-arbol.pasos, arbol.getProfundidad()+1));
 					creaArbol(arbol.getHi(), prof_min, prof_max - 1);
 					if (operador != TNodo.values()[3]) // != SIC
 						arbol.pasos += arbol.getHi().pasos-1;
 
 					if (operador == TNodo.values()[5]) { // == PROGN3
-						arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
+						arbol.Hc = new Arbol(arbol.pasosMax-arbol.pasos, arbol.getProfundidad()+1);
 						creaArbol(arbol.Hc, prof_min, prof_max - 1);
 						arbol.pasos += arbol.Hc.pasos-1;
 					}
 
-					arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos, getProfundidad()+1);
+					arbol.Hd = new Arbol(arbol.pasosMax-arbol.pasos, arbol.getProfundidad()+1);
 					creaArbol(arbol.Hd, prof_min, prof_max - 1);
 				} // se genera operando
 				else { // generacion del subarbol de operando/terminal
@@ -207,7 +207,7 @@ public class Arbol {
 		if (this.pasosMax - this.pasos >= subarbol.pasos) {
 			a.copiaArbol(subarbol);
 			profundidad = 0;
-			actualizaRama(nodo, a, subarbol);
+			this.actualizaRama(nodo, a, subarbol);
 			return true;
 		}
 		return false;
