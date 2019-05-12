@@ -1,5 +1,6 @@
 package metodosMutacion;
 
+import base.AlgoritmoGenetico;
 import base.Arbol;
 import base.Arbol.TNodo;
 import base.Cromosoma;
@@ -19,15 +20,17 @@ public class MutacionTerminal implements AlgoritmoMutacion {
 			if (prob < probMutacion){
 				tMutar = (int) (Math.random()*pob[i].getArbol().getPasos()+1);
 				
-				Arbol a = new Arbol();
-				a = pob[i].getArbol().buscarHoja(tMutar);
+				Arbol a = pob[i].getArbol().buscarHoja(tMutar);
 
-				a.setDato(TNodo.values()[(int) (Math.random()*3)]);
+				a.setDato(TNodo.values()[(a.getDato().ordinal()+1) % 3]); // sustituye por el siguiente terminal
 				
 				mutado = true;
 			}
 
-			if (mutado) pob[i].setFitness(pob[i].evaluaCromosoma());
+			if (mutado) {
+				pob[i].setFitness(pob[i].evaluaCromosoma());
+				AlgoritmoGenetico.numMuts++;
+			}
 		}
 	}
 

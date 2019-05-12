@@ -1,5 +1,6 @@
 package metodosMutacion;
 
+import base.AlgoritmoGenetico;
 import base.Arbol;
 import base.Cromosoma;
 import base.Arbol.TNodo;
@@ -30,7 +31,10 @@ public class MutacionFuncion implements AlgoritmoMutacion {
 					mutado = true;
 				}
 			}
-			if (mutado) pob[i].setFitness(pob[i].evaluaCromosoma());
+			if (mutado) {
+				pob[i].setFitness(pob[i].evaluaCromosoma());
+				AlgoritmoGenetico.numMuts++;
+			}
 		}
 	}
 }

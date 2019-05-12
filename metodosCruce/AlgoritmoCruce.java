@@ -1,5 +1,6 @@
 package metodosCruce;
 
+import base.AlgoritmoGenetico;
 import base.Arbol;
 import base.Cromosoma;
 
@@ -36,10 +37,14 @@ public class AlgoritmoCruce {
 			hijo2.setFitness(hijo2.evaluaCromosoma());
 
 			// los nuevos individuos sustituyen a sus progenitores
-			if (hijo1.getFitness() >= pob[selCruce[i]].getFitness())
+			if (hijo1.getFitness() >= pob[selCruce[i]].getFitness()) {
 				pob[selCruce[i]] = hijo1;
-			if (hijo2.getFitness() >= pob[selCruce[i+1]].getFitness())
+				AlgoritmoGenetico.numCruces++;
+			}
+			if (hijo2.getFitness() >= pob[selCruce[i+1]].getFitness()) {
 				pob[selCruce[i+1]] = hijo2;
+				AlgoritmoGenetico.numCruces++;
+			}
 		}
 	}
 

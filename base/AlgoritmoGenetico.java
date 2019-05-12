@@ -36,12 +36,16 @@ public class AlgoritmoGenetico {
 	
 	int generacionActual;
 
+	public static int numMuts;
+	public static int numCruces;
+	int ejecucion = 0;
+
 	public AlgoritmoGenetico() {
 		tamPob = 100;
 		numMaxGen = 300;
 		posMejor = 0;
 		probCruce = 0.6;
-		probMutacion = 0.05;
+		probMutacion = 0.2;
 		hMax = 4;
 		seleccion = "Ruleta";
 		cruce = "PMX";
@@ -276,7 +280,7 @@ public class AlgoritmoGenetico {
 		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
 		generacionActual = 0;
-		mediaTamPob = 0;
+		mediaTamPob = 0; numMuts = 0; numCruces = 0;
 		
 		inicializaPoblacion();
 		
@@ -316,11 +320,18 @@ public class AlgoritmoGenetico {
 				else generacionesAtascado++;
 			} else generacionActual++;
 		}
+		System.out.println("Ejecucion " + ejecucion);
+		System.out.println("Puntuacion: " + elMejor.getNumBocados());
+		System.out.println("Nº de mutaciones: " + numMuts);
+		System.out.println("Nº de cruces: " + numCruces);
 		System.out.println("Altura: " + elMejor.getArbol().getAltura());
+		System.out.println("Nº de nodos: " + elMejor.getArbol().getNum_nodos());
+		System.out.println();
+		ejecucion++;
 	}
 
 
-	//Getters and setters
+	//Getters and setters * * * * * * * * * * * * *
 
 	public double[] getGenMedia() {
 		return genMedia;
