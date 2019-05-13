@@ -44,7 +44,7 @@ public class Cromosoma {
 		if (hMax < arbol.getAltura()) fitness -= arbol.getAltura() - hMax;
 		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0)
 			fitness -= 0.01*arbol.getNum_nodos();
-		
+
 		return fitness;
 	}
 
@@ -109,8 +109,8 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
-		String s = "";
-		if (getArbol() != null) s = getArbol().toString();
+		String s = "Fitness: " + fitness + "\n";
+		if (getArbol() != null) s += getArbol().toString();
 		return s;
 	}
 

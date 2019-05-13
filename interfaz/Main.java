@@ -25,7 +25,6 @@ import interfaz.ConfigPanel.DoubleOption;
 import interfaz.ConfigPanel.IntegerOption;
 import tablero.Tablero;
 
-
 public class Main extends JFrame {
 
 	private static final long serialVersionUID = 5393378737313833016L;
@@ -146,7 +145,8 @@ public class Main extends JFrame {
 	
 	private void dibujaTablero(Tablero t, JPanel tablero) {
 		tablero.removeAll();
-		tablero.setLayout(new GridLayout(32,32));
+		tablero.setLayout(new GridLayout(32,32,3,3)); //filas,col,espacio entre casillas
+		
 		
 		for (int i = 0; i < 32*32; i++){
 			JPanel panel=new JPanel();
@@ -168,9 +168,9 @@ public class Main extends JFrame {
 				panel.setBackground(Color.red);
 				break;
 			}
-			Border borde;
-			borde = BorderFactory.createLineBorder(Color.black);  ///se le pone un borde.
-			panel.setBorder(borde);
+			//Border borde;
+			//borde = BorderFactory.createLineBorder(Color.black);  ///se le pone un borde.
+			//panel.setBorder(borde);
 			tablero.add(panel);
 		}
 	}
@@ -179,7 +179,7 @@ public class Main extends JFrame {
 	// construye y muestra la interfaz
 	public static void main(String[] args) {
 		Main p = new Main();
-		p.setSize(1000, 600);
+		p.setSize(1000, 800);
 		p.setVisible(true);	
 	}
 }

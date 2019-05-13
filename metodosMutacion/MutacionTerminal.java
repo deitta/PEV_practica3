@@ -21,7 +21,7 @@ public class MutacionTerminal implements AlgoritmoMutacion {
 				tMutar = (int) (Math.random()*pob[i].getArbol().getPasos()+1);
 				
 				Arbol a = pob[i].getArbol().buscarHoja(tMutar);
-
+				
 				a.setDato(TNodo.values()[(a.getDato().ordinal()+1) % 3]); // sustituye por el siguiente terminal
 				
 				mutado = true;

@@ -5,7 +5,6 @@ import metodosMutacion.AlgoritmoMutacion;
 import metodosMutacion.FactoriaMutacion;
 import metodosSeleccion.AlgoritmoSeleccion;
 import metodosSeleccion.FactoriaSeleccion;
-import tablero.Tablero;
 
 public class AlgoritmoGenetico {
 	Cromosoma[] pob;
@@ -22,7 +21,7 @@ public class AlgoritmoGenetico {
 	String cruce;
 	String mutacion;
 	int participantes;
-	
+
 	double elitismo; // elitismo*tamPob = tamElite
 	Cromosoma[] elite;
 
@@ -33,7 +32,7 @@ public class AlgoritmoGenetico {
 	double[] mejorAbsoluto; //azul
 
 	boolean contractividad;
-	
+
 	int generacionActual;
 
 	public static int numMuts;
@@ -53,7 +52,7 @@ public class AlgoritmoGenetico {
 		participantes = 3;
 		elitismo = 0;
 		contractividad = false;
-		
+
 
 		// en principio lo de abajo no es necesario pero si se quita da error por toString
 		pob = new Cromosoma[tamPob];
@@ -70,30 +69,35 @@ public class AlgoritmoGenetico {
 		genMedia = new double[numMaxGen];
 		genMejor = new double[numMaxGen];
 		mejorAbsoluto = new double[numMaxGen];
-		
+
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
 		int nGrupos = (hMax - 1), tamGrupos = tamPob/nGrupos;
-		
+
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
 				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
-				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
 				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2, hMax);
-				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 		}
-		
-		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
-			pob[i] = new Cromosoma(3, 9, hMax);
-			pob[i].fitness = pob[i].evaluaCromosoma();
-		}
-		
+
+		for (int i = tamGrupos*nGrupos; i < tamPob; i++)
+			pob[i] = new Cromosoma(1, 5, hMax);
+
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
 			elite[i] = new Cromosoma();
+
+		mediaTamPob = mediaTamPob / tamPob;
+
+		for (int i = 0; i < tamPob ; i++) {
+			pob[i].fitness = pob[i].evaluaCromosoma();
+		}
+
 
 		elMejor = new Cromosoma();
 		elMejor.copiaCromosoma(pob[0]);
@@ -275,7 +279,7 @@ public class AlgoritmoGenetico {
 			mediaTamPob += pob[i].getArbol().getNum_nodos();
 		mediaTamPob = mediaTamPob / tamPob;
 	}
-	
+
 	public void AlgoritmoGeneticoFuncion(){
 		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
@@ -290,14 +294,14 @@ public class AlgoritmoGenetico {
 		else adaptarMinimizacion(tamElite);
 
 		evalua();
-		
+
 		while (generacionActual < numMaxGen && generacionesAtascado < numMaxGen) {
 			if (tamElite > 0) separaElite(tamElite);
 
 			seleccion();
 			cruce();
 			mutacion();
-			
+
 			calculaMedia();
 
 			if (tamElite > 0) incluyeElite(tamElite);
@@ -306,7 +310,7 @@ public class AlgoritmoGenetico {
 			else adaptarMinimizacion(tamElite);
 
 			evalua();
-			
+
 			// para las graficas
 			media(generacionActual);
 			mejor(generacionActual);
