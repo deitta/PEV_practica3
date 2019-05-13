@@ -22,7 +22,7 @@ public class MutacionTerminal implements AlgoritmoMutacion {
 				Arbol a = new Arbol();
 				a = pob[i].getArbol().buscarHoja(tMutar);
 
-				a.setDato(TNodo.values()[(int) (Math.random()*3)]);
+				a.setDato(TNodo.values()[(int) (a.getDato().ordinal()+1) % 3]);
 				
 				mutado = true;
 			}

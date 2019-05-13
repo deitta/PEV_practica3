@@ -5,7 +5,6 @@ import metodosMutacion.AlgoritmoMutacion;
 import metodosMutacion.FactoriaMutacion;
 import metodosSeleccion.AlgoritmoSeleccion;
 import metodosSeleccion.FactoriaSeleccion;
-import tablero.Tablero;
 
 public class AlgoritmoGenetico {
 	Cromosoma[] pob;
@@ -74,26 +73,33 @@ public class AlgoritmoGenetico {
 		
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
-				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
-				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				pob[j+tamGrupos*i] = new Cromosoma(1, i+2, hMax);
+				//pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
 				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2, hMax);
-				pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				//pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 		}
-		mediaTamPob = mediaTamPob / tamPob;
 		
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
-			pob[i] = new Cromosoma(3, 9, hMax);
-			pob[i].fitness = pob[i].evaluaCromosoma();
+			pob[i] = new Cromosoma(1, 5, hMax);
+			//pob[i].fitness = pob[i].evaluaCromosoma();
 		}
 		
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
 			elite[i] = new Cromosoma();
+		//su fitness???
+		
+		mediaTamPob = mediaTamPob / tamPob;
 
+		for (int i = 0; i < tamPob ; i++) { 
+			pob[i].fitness = pob[i].evaluaCromosoma();
+		}
+		
+		
 		elMejor = new Cromosoma();
 		elMejor.copiaCromosoma(pob[0]);
 	}
