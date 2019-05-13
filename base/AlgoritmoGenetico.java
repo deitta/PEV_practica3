@@ -73,7 +73,7 @@ public class AlgoritmoGenetico {
 		
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
-				pob[j+tamGrupos*i] = new Cromosoma(1, i+2, hMax);
+				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
 				//pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
@@ -306,6 +306,8 @@ public class AlgoritmoGenetico {
 
 			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 			else adaptarMinimizacion(tamElite);
+			
+			
 
 			evalua();
 			

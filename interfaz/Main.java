@@ -7,14 +7,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
 
 import org.math.plot.Plot2DPanel;
 
@@ -150,7 +148,6 @@ public class Main extends JFrame {
 		
 		for (int i = 0; i < 32*32; i++){
 			JPanel panel=new JPanel();
-			// tablero.setLayout(new FlowLayout());
 			switch(t.getTablero()[(int) i/32][i%32]) {
 			case CAMINADA:
 				panel.setBackground(Color.orange);
@@ -168,9 +165,6 @@ public class Main extends JFrame {
 				panel.setBackground(Color.red);
 				break;
 			}
-			//Border borde;
-			//borde = BorderFactory.createLineBorder(Color.black);  ///se le pone un borde.
-			//panel.setBorder(borde);
 			tablero.add(panel);
 		}
 	}
@@ -179,7 +173,7 @@ public class Main extends JFrame {
 	// construye y muestra la interfaz
 	public static void main(String[] args) {
 		Main p = new Main();
-		p.setSize(1000, 800);
+		p.setSize(800, 600);
 		p.setVisible(true);	
 	}
 }
