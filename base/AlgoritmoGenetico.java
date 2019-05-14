@@ -44,13 +44,13 @@ public class AlgoritmoGenetico {
 		numMaxGen = 300;
 		posMejor = 0;
 		probCruce = 0.6;
-		probMutacion = 0.2;
+		probMutacion = 0.5;
 		hMax = 4;
-		seleccion = "Ruleta";
+		seleccion = "Ranking";
 		cruce = "PMX";
 		mutacion = "Heuristica";
 		participantes = 3;
-		elitismo = 0;
+		elitismo = 0.03;
 		contractividad = false;
 
 
@@ -304,10 +304,10 @@ public class AlgoritmoGenetico {
 
 			calculaMedia();
 
-			if (tamElite > 0) incluyeElite(tamElite);
-
 			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 			else adaptarMinimizacion(tamElite);
+
+			if (tamElite > 0) incluyeElite(tamElite);
 
 			evalua();
 

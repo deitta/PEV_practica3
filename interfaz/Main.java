@@ -168,9 +168,6 @@ public class Main extends JFrame {
 				panel.setBackground(Color.red);
 				break;
 			}
-			//Border borde;
-			//borde = BorderFactory.createLineBorder(Color.black);  ///se le pone un borde.
-			//panel.setBorder(borde);
 			tablero.add(panel);
 		}
 	}
@@ -179,7 +176,7 @@ public class Main extends JFrame {
 	// construye y muestra la interfaz
 	public static void main(String[] args) {
 		Main p = new Main();
-		p.setSize(1000, 800);
+		p.setSize(800, 600);
 		p.setVisible(true);	
 	}
 }
