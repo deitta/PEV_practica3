@@ -102,11 +102,7 @@ public class Arbol {
 			else {
 				if (arbol.getHi().pasos >= arbol.Hd.pasos)
 					arbol.pasos += arbol.getHi().pasos-1;
-				else arbol.pasos += arbol.Hd.pasos-1;
 			}
-			
-			arbol.pasos = arbol.Hi.pasos + arbol.Hd.pasos;
-			if (arbol.Hc != null) arbol.pasos += arbol.Hc.pasos;
 		}
 	}
 

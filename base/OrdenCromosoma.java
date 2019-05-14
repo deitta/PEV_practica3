@@ -4,6 +4,6 @@ import java.util.Comparator;
 
 public class OrdenCromosoma implements Comparator<Cromosoma> {
 	public int compare(Cromosoma A, Cromosoma B) {
-		return (int) (B.getAdptacion() - A.getAdptacion());
+		return Double.compare(B.getAdptacion(), A.getAdptacion());
 	}
 }

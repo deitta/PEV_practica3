@@ -43,7 +43,6 @@ public class AlgoritmoGenetico {
 		probMutacion = 0.5;
 		hMax = 4;
 		seleccion = "Ruleta";
-		cruce = "PMX";
 		mutacion = "Terminal";
 		participantes = 3;
 		elitismo = 0;
