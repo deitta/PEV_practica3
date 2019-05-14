@@ -32,18 +32,17 @@ public class Cromosoma {
 
 		t.recorreTablero(getArbol());
 		
-		for (int i = 0; i < 32; i++){
-			for (int j = 0; j < 32; j++) {
+		for (int i = 0; i < 32; i++)
+			for (int j = 0; j < 32; j++)
 				if (t.getTablero()[i][j] == Tablero.TEstado.HABIACOMIDA) {
 					fitness++;
 					numBocados++;
 				}
-			}
-		}
+		
 		// penaliza a los arboles con altura mayor a hMax
 		if (hMax < arbol.getAltura()) fitness -= arbol.getAltura() - hMax;
-		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0)
-			fitness = fitness - 0.1*arbol.getNum_nodos();
+//		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0)
+//			fitness = fitness - 0.05*arbol.getNum_nodos();
 
 		return fitness;
 	}
@@ -109,6 +108,7 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
+		String s = "";
 		if (getArbol() != null) s += getArbol().toString();
 		return s;
 	}

@@ -48,7 +48,7 @@ public class AlgoritmoGenetico {
 		hMax = 4;
 		seleccion = "Ranking";
 		cruce = "PMX";
-		mutacion = "Terminal";
+		mutacion = "Inicializacion";
 		participantes = 3;
 		elitismo = 0.03;
 		contractividad = false;
