@@ -41,10 +41,19 @@ public class Cromosoma {
 			}
 		}
 		// penaliza a los arboles con altura mayor a hMax
-		/*if (hMax < arbol.getAltura()) fitness -= arbol.getAltura() - hMax;
-		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0)
-			fitness -= 0.25*arbol.getNum_nodos();
-		*/
+//		if (hMax < arbol.getAltura()) {
+//			fitness -= 0.01; // -= arbol.getAltura() - hMax;
+//			
+//			if(fitness < 0) 
+//				fitness = 0;
+//		}
+//		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0) {
+//			fitness -= 0.01*arbol.getNum_nodos();
+//			
+//			if(fitness < 0) {
+//				fitness = 0;
+//			}
+//		}
 		return fitness;
 	}
 
@@ -109,7 +118,8 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
-		String s = "" + fitness;
+		String s = "Fitness: " + fitness + " ";
+		//String s = fitness+"|" +adaptacion;
 		if (getArbol() != null) s += getArbol().toString();
 		return s;
 	}

@@ -28,7 +28,7 @@ public class Arbol {
 			// generacion del subarbol de operador/funcion
 			TNodo operador;
 			if (arbol.pasosMax > 1) operador = TNodo.values()[(int) (Math.random()*3)+3]; // operando = SIC/PROGN2/PROGN3
-			else operador = TNodo.values()[(int) (Math.random()*2)+3]; // operando = SIC/PROGN2  ???
+			else operador = TNodo.values()[(int) (Math.random()*2)+3]; // operando = SIC/PROGN2
 			arbol.dato = operador;
 			arbol.pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
 			
@@ -161,8 +161,7 @@ public class Arbol {
 	public Arbol buscarFuncion(int numFuncion) {
 		Arbol a;
 		if (numFuncion  > (num_nodos - pasos)) {
-		//	numFuncion -= (num_nodos - pasos);
-			return null; //num_nodos - pasos = numero de funciones en un arbol
+			return null;
 		}
 		else if (esFuncion() && numFuncion == 1) return this;
 		else {
@@ -172,7 +171,6 @@ public class Arbol {
 				if (a != null) return a;
 				if (a == null) numFuncion -= this.Hi.num_nodos - this.Hi.pasos ;
 				if (this.Hc != null) {
-					//numFuncion--;
 					a = this.Hc.buscarFuncion(numFuncion);
 					if (a != null) return a;
 					if (a == null) numFuncion -= this.Hc.num_nodos - this.Hc.pasos ;

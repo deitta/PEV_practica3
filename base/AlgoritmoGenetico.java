@@ -40,11 +40,11 @@ public class AlgoritmoGenetico {
 		numMaxGen = 300;
 		posMejor = 0;
 		probCruce = 0.6;
-		probMutacion = 0.05;
+		probMutacion = 0.5;
 		hMax = 4;
 		seleccion = "Ruleta";
 		cruce = "PMX";
-		mutacion = "Heuristica";
+		mutacion = "Terminal";
 		participantes = 3;
 		elitismo = 0;
 		contractividad = false;
@@ -73,25 +73,21 @@ public class AlgoritmoGenetico {
 		
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
-				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
-				//pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
+				pob[j+tamGrupos*i] = new Cromosoma(1, i+2, hMax);
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 			for (int j = (int) Math.ceil(tamGrupos/2); j < tamGrupos; j++) { // inicializacion completa
 				pob[j+tamGrupos*i] = new Cromosoma(i+2, i+2, hMax);
-				//pob[j+tamGrupos*i].fitness = pob[j+tamGrupos*i].evaluaCromosoma();
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 		}
 		
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++) {
-			pob[i] = new Cromosoma(1, 5, hMax);
-			//pob[i].fitness = pob[i].evaluaCromosoma();
+			pob[i] = new Cromosoma(2, 5, hMax);
 		}
 		
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
 			elite[i] = new Cromosoma();
-		//su fitness???
 		
 		mediaTamPob = mediaTamPob / tamPob;
 
@@ -166,7 +162,8 @@ public class AlgoritmoGenetico {
 			fmin = elMejor.fitness;
 
 		fmin = Math.abs(fmin * 1.05); // margen para evitar suma adaptacion = 0
-
+		if (fmin == 0)
+			fmin = 1.05;
 		// adapta la poblacion
 		for (int i = 0; i < tamPob; i++)
 			pob[i].adaptacion = pob[i].fitness + fmin;
@@ -230,16 +227,16 @@ public class AlgoritmoGenetico {
 		// y buscamos el mejor dentro de los peores
 		for (int i = 0; i < tamElite; i++){
 			pobPeores[i] = i;
-			if (pob[pobPeores[i]].adaptacion > pob[pobPeores[posMejor]].adaptacion) posMejor = i;
+			if (pob[pobPeores[i]].fitness > pob[pobPeores[posMejor]].fitness) posMejor = i;
 		}
 
 		// recorre la poblacion buscando a los peores individuos
 		for (int i = tamElite; i < tamPob; i++){
 			// si encontramos a algun individuo peor que el mejor de los individuosPeores este ocupara su lugar y volvemos a buscar el mejor dentro de los peores
-			if (pob[pobPeores[posMejor]].adaptacion > pob[i].adaptacion) {
+			if (pob[pobPeores[posMejor]].fitness > pob[i].fitness) {
 				pobPeores[posMejor] = i;
 				for (int j = 0; j < tamElite; j++)
-					if(pob[pobPeores[j]].adaptacion > pob[pobPeores[posMejor]].adaptacion) posMejor = j;
+					if(pob[pobPeores[j]].fitness > pob[pobPeores[posMejor]].fitness) posMejor = j;
 			}
 		}
 
@@ -306,7 +303,6 @@ public class AlgoritmoGenetico {
 
 			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 			else adaptarMinimizacion(tamElite);
-			
 			
 
 			evalua();
