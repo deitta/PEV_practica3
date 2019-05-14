@@ -7,14 +7,13 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
 
 import org.math.plot.Plot2DPanel;
 
@@ -80,11 +79,11 @@ public class Main extends JFrame {
 		});
 		add(valido, BorderLayout.SOUTH);
 
-		final JTextArea resultado = new JTextArea(" Arbol mejor resultado(): ");
-		resultado.setMargin(new Insets(10, 10, 10, 10));
+		final JTextArea resultado = new JTextArea(" Arbol mejor resultado(): ", 5, 5);
+		resultado.setMargin(new Insets(6, 6, 6, 6));
 		resultado.setLineWrap(true);
-		
-		panelResultados.add(resultado, BorderLayout.NORTH);
+		final JScrollPane scroll = new JScrollPane(resultado);
+		panelResultados.add(scroll, BorderLayout.NORTH);
 
 		// crea botones para calcular y mostrar el resultado del algoritmo
 		JButton boton = new JButton("Calcula grafica");
@@ -108,7 +107,7 @@ public class Main extends JFrame {
 				t.recorreTablero(AG.getElMejor().getArbol());
 				dibujaTablero(t, tablero);
 
-				resultado.setText(" Arbol mejor resultado("+ AG.getElMejor().getNumBocados() +"): " + AG.getElMejor().toString());
+				resultado.setText( AG.getElMejor().toString() + "\n" + "Arbol mejor resultado(" +  AG.getElMejor().getNumBocados() +") ");
 			}
 		});
 
@@ -150,7 +149,6 @@ public class Main extends JFrame {
 		
 		for (int i = 0; i < 32*32; i++){
 			JPanel panel=new JPanel();
-			// tablero.setLayout(new FlowLayout());
 			switch(t.getTablero()[(int) i/32][i%32]) {
 			case CAMINADA:
 				panel.setBackground(Color.orange);

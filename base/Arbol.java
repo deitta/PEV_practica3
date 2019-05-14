@@ -160,8 +160,7 @@ public class Arbol {
 
 	public Arbol buscarFuncion(int numFuncion) {
 		Arbol a;
-		if (numFuncion  > (num_nodos - pasos))
-			return null;
+		if (numFuncion  > (num_nodos - pasos)) return null;
 		else if (esFuncion() && numFuncion == 1) return this;
 		else {
 			if (this.Hi != null) {

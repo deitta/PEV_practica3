@@ -21,7 +21,7 @@ public class AlgoritmoGenetico {
 	String cruce;
 	String mutacion;
 	int participantes;
-
+	
 	double elitismo; // elitismo*tamPob = tamElite
 	Cromosoma[] elite;
 
@@ -32,7 +32,7 @@ public class AlgoritmoGenetico {
 	double[] mejorAbsoluto; //azul
 
 	boolean contractividad;
-
+	
 	int generacionActual;
 
 	public static int numMuts;
@@ -48,11 +48,11 @@ public class AlgoritmoGenetico {
 		hMax = 4;
 		seleccion = "Ranking";
 		cruce = "PMX";
-		mutacion = "Heuristica";
+		mutacion = "Terminal";
 		participantes = 3;
 		elitismo = 0.03;
 		contractividad = false;
-
+		
 
 		// en principio lo de abajo no es necesario pero si se quita da error por toString
 		pob = new Cromosoma[tamPob];
@@ -69,12 +69,12 @@ public class AlgoritmoGenetico {
 		genMedia = new double[numMaxGen];
 		genMejor = new double[numMaxGen];
 		mejorAbsoluto = new double[numMaxGen];
-
+		
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
 		int nGrupos = (hMax - 1), tamGrupos = tamPob/nGrupos;
-
+		
 		for (int i = 0; i < nGrupos; i++) {
 			for (int j = 0; j < Math.ceil(tamGrupos/2); j++) { // inicializacion creciente
 				pob[j+tamGrupos*i] = new Cromosoma(0, i+2, hMax);
@@ -86,6 +86,7 @@ public class AlgoritmoGenetico {
 			}
 		}
 
+
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++)
 			pob[i] = new Cromosoma(1, 5, hMax);
 
@@ -94,11 +95,11 @@ public class AlgoritmoGenetico {
 
 		mediaTamPob = mediaTamPob / tamPob;
 
-		for (int i = 0; i < tamPob ; i++) {
+		for (int i = 0; i < tamPob ; i++) { 
 			pob[i].fitness = pob[i].evaluaCromosoma();
 		}
-
-
+		
+		
 		elMejor = new Cromosoma();
 		elMejor.copiaCromosoma(pob[0]);
 	}
@@ -165,7 +166,8 @@ public class AlgoritmoGenetico {
 			fmin = elMejor.fitness;
 
 		fmin = Math.abs(fmin * 1.05); // margen para evitar suma adaptacion = 0
-
+		if (fmin == 0)
+			fmin = 1.05;
 		// adapta la poblacion
 		for (int i = 0; i < tamPob; i++)
 			pob[i].adaptacion = pob[i].fitness + fmin;
@@ -279,7 +281,7 @@ public class AlgoritmoGenetico {
 			mediaTamPob += pob[i].getArbol().getNum_nodos();
 		mediaTamPob = mediaTamPob / tamPob;
 	}
-
+	
 	public void AlgoritmoGeneticoFuncion(){
 		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
@@ -294,23 +296,24 @@ public class AlgoritmoGenetico {
 		else adaptarMinimizacion(tamElite);
 
 		evalua();
-
+		
 		while (generacionActual < numMaxGen && generacionesAtascado < numMaxGen) {
 			if (tamElite > 0) separaElite(tamElite);
 
 			seleccion();
 			cruce();
 			mutacion();
-
+			
 			calculaMedia();
 
 			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 			else adaptarMinimizacion(tamElite);
+			
 
 			if (tamElite > 0) incluyeElite(tamElite);
 
 			evalua();
-
+			
 			// para las graficas
 			media(generacionActual);
 			mejor(generacionActual);

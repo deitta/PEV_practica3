@@ -109,7 +109,6 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
-		String s = "Fitness: " + fitness + "\n";
 		if (getArbol() != null) s += getArbol().toString();
 		return s;
 	}
