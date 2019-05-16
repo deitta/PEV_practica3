@@ -41,8 +41,7 @@ public class Cromosoma {
 		
 		// penaliza a los arboles con altura mayor a hMax
 		if (hMax < arbol.getAltura()) fitness -= (arbol.getAltura() - hMax)*1.5;
-		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && ((int) Math.random()*2) == 0)
-			fitness = fitness - 0.01*arbol.getNum_nodos();
+		fitness = fitness - 0.01*arbol.getNum_nodos();
 
 		return fitness;
 	}
