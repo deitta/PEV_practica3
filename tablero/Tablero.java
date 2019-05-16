@@ -116,8 +116,8 @@ public class Tablero {
 	// para depurar
 	public static void main(String args[]) {
 		Tablero t = new Tablero();
-		Arbol a = new Arbol(400, 0);
-		a.creaArbol(a, 2, 9);
+		Arbol a = new Arbol(400);
+		a.creaArbol(2, 9);
 		System.out.println("Arbol: " + a.toString());
 		System.out.println();
 		System.out.println("Tablero inicial:\n" + t.toString());

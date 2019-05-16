@@ -18,7 +18,6 @@ public class AlgoritmoGenetico {
 	static int mediaTamPob;
 
 	String seleccion;
-	String cruce;
 	String mutacion;
 	int participantes;
 	
@@ -45,10 +44,9 @@ public class AlgoritmoGenetico {
 		posMejor = 0;
 		probCruce = 0.6;
 		probMutacion = 0.5;
-		hMax = 4;
+		hMax = 5;
 		seleccion = "Ranking";
-		cruce = "PMX";
-		mutacion = "Terminal";
+		mutacion = "Inicializacion";
 		participantes = 3;
 		elitismo = 0.03;
 		contractividad = false;
@@ -274,13 +272,6 @@ public class AlgoritmoGenetico {
 			else mejorAbsoluto[generacion] = mejorAbsoluto[generacion-1];
 		}
 	}
-
-	private void calculaMedia() {
-		mediaTamPob = 0;
-		for (int i = 0; i < tamPob; i++)
-			mediaTamPob += pob[i].getArbol().getNum_nodos();
-		mediaTamPob = mediaTamPob / tamPob;
-	}
 	
 	public void AlgoritmoGeneticoFuncion(){
 		int generacionesAtascado = 0;
@@ -289,8 +280,6 @@ public class AlgoritmoGenetico {
 		mediaTamPob = 0; numMuts = 0; numCruces = 0;
 		
 		inicializaPoblacion();
-		
-		calculaMedia();
 
 		if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 		else adaptarMinimizacion(tamElite);
@@ -303,8 +292,6 @@ public class AlgoritmoGenetico {
 			seleccion();
 			cruce();
 			mutacion();
-			
-			calculaMedia();
 
 			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 			else adaptarMinimizacion(tamElite);
@@ -382,14 +369,6 @@ public class AlgoritmoGenetico {
 
 	public void setSeleccion(String seleccion) {
 		this.seleccion = seleccion;
-	}
-
-	public String getCruce() {
-		return cruce;
-	}
-
-	public void setCruce(String cruce) {
-		this.cruce = cruce;
 	}
 
 	public String getMutacion() {

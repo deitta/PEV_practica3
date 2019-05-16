@@ -16,11 +16,11 @@ public class MutacionInicializacion implements AlgoritmoMutacion {
 			prob = Math.random();
 			// mutan los genes con prob<probMutacion
 			if (prob < probMutacion){
-				nMutar = (int) (Math.random()*pob[i].getArbol().getNum_nodos() + 1);
-				int pasosMax = (int) (pob[i].getPasosMax() - pob[i].getArbol().getPasos() + pob[i].getArbol().buscarNodo(nMutar).getPasos());
-				Arbol a = new Arbol(pasosMax, pob[i].getArbol().buscarNodo(nMutar).getProfundidad());
+				nMutar = (int) (Math.random()*(pob[i].getArbol().getNum_nodos())+1);
+				int pasosMax = (int) (pob[i].getPasosMax() - pob[i].getArbol().getPasos() +	pob[i].getArbol().buscarNodo(nMutar).getPasos());
+				Arbol a = new Arbol(pasosMax);
 				
-				a.creaArbol(a, 0, pob[i].getHmax()-a.getProfundidad()); // nose, si hago esto creo que no hace falta luego sustituirArbol
+				a.creaArbol(0, pob[i].getHmax());
 			
 				pob[i].getArbol().sustituirSubarbol(nMutar, a);
 				

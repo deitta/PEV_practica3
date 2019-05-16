@@ -37,11 +37,11 @@ public class AlgoritmoCruce {
 			hijo2.setFitness(hijo2.evaluaCromosoma());
 
 			// los nuevos individuos sustituyen a sus progenitores
-			if (hijo1.getFitness() >= pob[selCruce[i]].getFitness()) {
+			if (hijo1.getFitness() >= pob[selCruce[i]].getFitness() && hijo1.getArbol().getAltura() <= pob[selCruce[i]].getArbol().getAltura()) {
 				pob[selCruce[i]] = hijo1;
 				AlgoritmoGenetico.numCruces++;
 			}
-			if (hijo2.getFitness() >= pob[selCruce[i+1]].getFitness()) {
+			if (hijo2.getFitness() >= pob[selCruce[i+1]].getFitness() && hijo2.getArbol().getAltura() <= pob[selCruce[i+1]].getArbol().getAltura()) {
 				pob[selCruce[i+1]] = hijo2;
 				AlgoritmoGenetico.numCruces++;
 			}
@@ -50,25 +50,21 @@ public class AlgoritmoCruce {
 
 	private static void cruce(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
 		Arbol subarbol1 = new Arbol(), subarbol2 = new Arbol();
-		int num_nodos, nodo_cruce;
-		hijo1.setArbol(new Arbol());
-		hijo2.setArbol(new Arbol());
+		int nodo_cruceP1, nodo_cruceP2;
 		// copia los padres en los hijos
 		hijo1.copiaCromosoma(padre1);
 		hijo2.copiaCromosoma(padre2);
 
 		// elige un nodo aleatorio
-		num_nodos = Math.min(padre1.getArbol().getNum_nodos(), padre2.getArbol().getNum_nodos());
-		nodo_cruce = (int) (Math.random()*num_nodos+1);
+		nodo_cruceP1 = (int) (Math.random()*(padre1.getArbol().getNum_nodos())+1);
+		nodo_cruceP2 = (int) (Math.random()*(padre2.getArbol().getNum_nodos())+1);
 
 		// copia el subarbol a partir del nodo seleccionado de cada padre
-		subarbol1.copiaArbol(padre1.getArbol().buscarNodo(nodo_cruce));
-		subarbol2.copiaArbol(padre2.getArbol().buscarNodo(nodo_cruce));
+		subarbol1.copiaArbol(padre1.getArbol().buscarNodo(nodo_cruceP1));
+		subarbol2.copiaArbol(padre2.getArbol().buscarNodo(nodo_cruceP2));
 
-		if (subarbol1.getAltura() <= padre2.getHmax()-subarbol2.getProfundidad() && subarbol2.getAltura() <= padre1.getHmax()-subarbol1.getProfundidad()) {
-			// sustituir en los hijos los subarboles si respetan el numero de pasos
-			hijo1.getArbol().sustituirSubarbol(nodo_cruce, subarbol2);
-			hijo2.getArbol().sustituirSubarbol(nodo_cruce, subarbol1);
-		}
+		// sustituir en los hijos los subarboles
+		hijo1.getArbol().sustituirSubarbol(nodo_cruceP1, subarbol2);
+		hijo2.getArbol().sustituirSubarbol(nodo_cruceP2, subarbol1);
 	}
 }
