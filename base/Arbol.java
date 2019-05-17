@@ -26,7 +26,7 @@ public class Arbol {
 		int tipo = (int) Math.round(Math.random()); // se decide aleatoriamente operando/terminal u operador/funcion
 
 		// se genera operador/funcion si tiene que crecer o si no ha alcanzado la prof_max y el tipo es uno
-		if ((prof_min > 0 && pasosMax > 0) || (prof_max > 0 && tipo == 1)) {
+		if (prof_min > 0 || (prof_max > 0 && tipo == 1)) {
 			// generacion del subarbol de operador/funcion
 			TNodo operador;
 			if (pasosMax > 1) operador = TNodo.values()[(int) (Math.random()*3)+3]; // operando = SIC/PROGN2/PROGN3
@@ -35,21 +35,21 @@ public class Arbol {
 			pasos += (operador.ordinal()-2) - 1; // pasos = pasosDelOperador - 1
 
 			// hijo izq
-			setHi(new Arbol(pasosMax-pasos));
+			setHi(new Arbol());
 			Hi.creaArbol(prof_min - 1, prof_max - 1);
 			num_nodos += Hi.num_nodos;
 			pasos = getHi().pasos;
 			
 			// hijo central
 			if (operador == TNodo.values()[5]) { // == PROGN3
-				Hc = new Arbol(pasosMax-pasos);
+				Hc = new Arbol();
 				Hc.creaArbol(prof_min - 1, prof_max - 1);
 				pasos += Hc.pasos;
 				num_nodos += Hc.num_nodos;
 			}
 			
 			// hijo drch
-			Hd = new Arbol(pasosMax-pasos);
+			Hd = new Arbol();
 			Hd.creaArbol(prof_min - 1, prof_max - 1);
 			num_nodos += Hd.num_nodos;
 			pasos += Hd.pasos;
