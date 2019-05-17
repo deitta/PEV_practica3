@@ -34,35 +34,40 @@ public class Tablero {
 		restauraTablero();
 	}
 
-	public void recorreTablero(Arbol arbol) {
-		switch(arbol.getDato()) {
-		case AVANZA:
-			hor.avanza();
-			if (tablero[hor.ejeY][hor.ejeX] == TEstado.HAYCOMIDA || tablero[hor.ejeY][hor.ejeX] == TEstado.HABIACOMIDA) tablero[hor.ejeY][hor.ejeX] = TEstado.HABIACOMIDA;
-			else tablero[hor.ejeY][hor.ejeX] = TEstado.CAMINADA;
-			break;
-		case GIRA_DERECHA:
-			hor.giraDch();
-			break;
-		case GIRA_IZQUIERDA:
-			hor.giraIzq();
-			break;
-		case SIC:
-			Hormiga horAux = new Hormiga(hor.ejeX, hor.ejeY, hor.dir);
-			horAux.avanza();
-			if (tablero[horAux.ejeY][horAux.ejeX] == TEstado.HAYCOMIDA)
-				recorreTablero(arbol.getHi());
-			else recorreTablero(arbol.getHd());
-			break;
-		case PROGN2:
-			recorreTablero(arbol.getHi());
-			recorreTablero(arbol.getHd());
-			break;
-		case PROGN3:
-			recorreTablero(arbol.getHi());
-			recorreTablero(arbol.getHc());
-			recorreTablero(arbol.getHd());
-			break;
+	public void recorreTablero(Arbol arbol, Arbol ejecutar) {
+		if (arbol.getPasosMax() > 0) {
+			switch(ejecutar.getDato()) {
+			case AVANZA:
+				hor.avanza();
+				if (tablero[hor.ejeY][hor.ejeX] == TEstado.HAYCOMIDA || tablero[hor.ejeY][hor.ejeX] == TEstado.HABIACOMIDA) tablero[hor.ejeY][hor.ejeX] = TEstado.HABIACOMIDA;
+				else tablero[hor.ejeY][hor.ejeX] = TEstado.CAMINADA;
+				arbol.setPasosMax(arbol.getPasosMax() - 1);
+				break;
+			case GIRA_DERECHA:
+				hor.giraDch();
+				arbol.setPasosMax(arbol.getPasosMax() - 1);
+				break;
+			case GIRA_IZQUIERDA:
+				hor.giraIzq();
+				arbol.setPasosMax(arbol.getPasosMax() - 1);
+				break;
+			case SIC:
+				Hormiga horAux = new Hormiga(hor.ejeX, hor.ejeY, hor.dir);
+				horAux.avanza();
+				if (tablero[horAux.ejeY][horAux.ejeX] == TEstado.HAYCOMIDA)
+					recorreTablero(arbol, ejecutar.getHi());
+				else recorreTablero(arbol, ejecutar.getHd());
+				break;
+			case PROGN2:
+				recorreTablero(arbol, ejecutar.getHi());
+				recorreTablero(arbol, ejecutar.getHd());
+				break;
+			case PROGN3:
+				recorreTablero(arbol, ejecutar.getHi());
+				recorreTablero(arbol, ejecutar.getHc());
+				recorreTablero(arbol, ejecutar.getHd());
+				break;
+			}
 		}
 	}
 
@@ -73,7 +78,7 @@ public class Tablero {
 			fr = new FileReader (archivo);
 			int f = 0, c = 0; // f -> fila, c -> columna
 			char casilla = (char) fr.read();
-			
+
 			int aux = fr.read();
 			while(aux != -1) {
 				switch(casilla) {
@@ -116,15 +121,26 @@ public class Tablero {
 	// para depurar
 	public static void main(String args[]) {
 		Tablero t = new Tablero();
-		Arbol a = new Arbol(400);
-		a.creaArbol(2, 9);
-		System.out.println("Arbol: " + a.toString());
-		System.out.println();
-		System.out.println("Tablero inicial:\n" + t.toString());
-		System.out.println();
-
-		t.recorreTablero(a);
-		System.out.println("Tablero final:\n" + t.toString());	
+		int numBocados = 0;
+		
+		for (int i = 0; i < 32; i++)
+			for (int j = 0; j < 32; j++)
+				if (t.getTablero()[i][j] == Tablero.TEstado.HAYCOMIDA)
+					numBocados++;
+		
+		System.out.println(numBocados);
+		
+//		Arbol a = new Arbol(400);
+//		a.creaArbol(2, 9);
+//		System.out.println("Arbol: " + a.toString());
+//		System.out.println();
+//		System.out.println("Tablero inicial:\n" + t.toString());
+//		System.out.println();
+//
+//		int pasosMax = a.getPasosMax();
+////		t.recorreTablero(a);
+//		a.setPasosMax(pasosMax);
+//		System.out.println("Tablero final:\n" + t.toString());	
 	}
 
 	public TEstado[][] getTablero() {

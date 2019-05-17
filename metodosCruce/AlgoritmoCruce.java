@@ -37,11 +37,15 @@ public class AlgoritmoCruce {
 			hijo2.setFitness(hijo2.evaluaCromosoma());
 
 			// los nuevos individuos sustituyen a sus progenitores
-			if (hijo1.getFitness() >= pob[selCruce[i]].getFitness() && hijo1.getArbol().getAltura() <= pob[selCruce[i]].getArbol().getAltura()) {
+			if (hijo1.getFitness() > pob[selCruce[i]].getFitness()
+					|| (hijo1.getFitness() == pob[selCruce[i]].getFitness()
+					&& hijo1.getArbol().getAltura() <= pob[selCruce[i]].getArbol().getAltura())) {
 				pob[selCruce[i]] = hijo1;
 				AlgoritmoGenetico.numCruces++;
 			}
-			if (hijo2.getFitness() >= pob[selCruce[i+1]].getFitness() && hijo2.getArbol().getAltura() <= pob[selCruce[i+1]].getArbol().getAltura()) {
+			if (hijo2.getFitness() > pob[selCruce[i+1]].getFitness()
+					|| (hijo2.getFitness() == pob[selCruce[i+1]].getFitness()
+					&& hijo2.getArbol().getAltura() <= pob[selCruce[i+1]].getArbol().getAltura())) {
 				pob[selCruce[i+1]] = hijo2;
 				AlgoritmoGenetico.numCruces++;
 			}

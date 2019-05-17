@@ -43,14 +43,13 @@ public class AlgoritmoGenetico {
 		numMaxGen = 300;
 		posMejor = 0;
 		probCruce = 0.6;
-		probMutacion = 0.5;
-		hMax = 5;
+		probMutacion = 0.05;
+		hMax = 4;
 		seleccion = "Ranking";
 		mutacion = "Inicializacion";
 		participantes = 3;
 		elitismo = 0.03;
 		contractividad = false;
-		
 
 		// en principio lo de abajo no es necesario pero si se quita da error por toString
 		pob = new Cromosoma[tamPob];
@@ -83,7 +82,6 @@ public class AlgoritmoGenetico {
 				mediaTamPob += pob[j+tamGrupos*i].getArbol().getNum_nodos();
 			}
 		}
-
 
 		for (int i = tamGrupos*nGrupos; i < tamPob; i++)
 			pob[i] = new Cromosoma(1, 5, hMax);
@@ -295,7 +293,6 @@ public class AlgoritmoGenetico {
 
 			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 			else adaptarMinimizacion(tamElite);
-			
 
 			if (tamElite > 0) incluyeElite(tamElite);
 

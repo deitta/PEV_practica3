@@ -38,8 +38,7 @@ public class Arbol {
 			setHi(new Arbol(pasosMax-pasos));
 			Hi.creaArbol(prof_min - 1, prof_max - 1);
 			num_nodos += Hi.num_nodos;
-			if (operador != TNodo.values()[3]) // != SIC
-				pasos = getHi().pasos;
+			pasos = getHi().pasos;
 			
 			// hijo central
 			if (operador == TNodo.values()[5]) { // == PROGN3
@@ -53,11 +52,7 @@ public class Arbol {
 			Hd = new Arbol(pasosMax-pasos);
 			Hd.creaArbol(prof_min - 1, prof_max - 1);
 			num_nodos += Hd.num_nodos;
-			if (dato != TNodo.values()[3]) // != SIC
-				pasos += Hd.pasos;
-			else if (getHi().pasos >= Hd.pasos)
-					pasos = getHi().pasos;
-			else pasos = Hd.pasos;
+			pasos += Hd.pasos;
 
 			altura = Math.max(Hi.altura, Hd.altura);
 			if(Hc != null) altura = Math.max(altura, Hc.altura);
@@ -71,7 +66,6 @@ public class Arbol {
 	}
 
 	public void copiaArbol(Arbol arbol) {
-		//		this = new Arbol();
 		this.dato = arbol.dato;
 		if (arbol.Hi != null) {
 			this.Hi = new Arbol();
@@ -113,7 +107,7 @@ public class Arbol {
 				if (a != null) return a;
 				nodo = nodo - this.Hd.num_nodos;
 			}
-			return this;
+			return null;
 		}
 	}
 
@@ -135,13 +129,13 @@ public class Arbol {
 				a = this.Hd.buscarFuncion(numFuncion);
 				if (a != null) return a;
 			}
-			return this;
+			return null;
 		}
 	}
 
 	public Arbol buscarHoja(int hoja) {
 		Arbol a;
-		if (hoja  > pasos) return null;
+		if (hoja > pasos) return null;
 		else if (hoja == 1 && esTerminal()) return this;
 		else {
 			if (this.Hi != null) {
@@ -157,7 +151,7 @@ public class Arbol {
 				if (a != null) return a;
 				hoja = hoja - this.Hd.pasos;
 			}
-			return this;
+			return null;
 		}
 	}
 
@@ -179,8 +173,7 @@ public class Arbol {
 			if (Hc != null) {
 				num_nodos += Hc.num_nodos;
 				pasos += Hc.pasos;
-			} else if (dato == TNodo.values()[3]) // si el nodo es instruccion SIC contamos los pasos del hijo mas grande
-				pasos = Math.max(Hi.pasos, Hd.pasos);
+			}
 			
 			altura = Math.max(Hi.altura, Hd.altura);
 			if(Hc != null) altura = Math.max(altura, Hc.altura);
@@ -201,15 +194,20 @@ public class Arbol {
 	}
 
 	public String toString() {
-//		String s = "";
-//
-//		s += this.getDato().name();
-//		if (this.Hi != null) {
-//			s += "(" + this.Hi.toString() + ",";
-//			if (this.Hc != null) s += this.Hc.toString() + ",";
-//			s += this.Hd.toString() + ")";
-//		}
-		// Para depurar bonito
+		String s = "";
+
+		s += this.getDato().name();
+		if (this.Hi != null) {
+			s += "(" + this.Hi.toString() + ",";
+			if (this.Hc != null) s += this.Hc.toString() + ",";
+			s += this.Hd.toString() + ")";
+		}
+
+		return s;
+	}
+
+	// Para depurar bonito
+/*	public String toString() {
 		String s = "", t = "";
 
 		for (int i = 5; i > altura; i--)
@@ -224,7 +222,8 @@ public class Arbol {
 
 		return s;
 	}
-
+*/
+	
 	// Para depurar
 	public static void main(String args[]) {
 		Arbol a = new Arbol(400), b = new Arbol(400);
@@ -279,6 +278,12 @@ public class Arbol {
 	}
 	public void setAltura(int profundidad) {
 		this.altura = profundidad;
+	}
+	public int getPasosMax() {
+		return pasosMax;
+	}
+	public void setPasosMax(int pasosMax) {
+		this.pasosMax = pasosMax;
 	}
 
 }

@@ -104,7 +104,10 @@ public class Main extends JFrame {
 				plot.addLinePlot("mejor de la generacion", x, AG.getGenMejor());
 				plot.addLinePlot("media de la generacion", x, AG.getGenMedia());
 				
-				t.recorreTablero(AG.getElMejor().getArbol());
+				int pasosMax = AG.getElMejor().getPasosMax();
+				while (AG.getElMejor().getArbol().getPasosMax() > 0)
+					t.recorreTablero(AG.getElMejor().getArbol(), AG.getElMejor().getArbol());
+				AG.getElMejor().getArbol().setPasosMax(pasosMax);
 				dibujaTablero(t, tablero);
 
 				resultado.setText( AG.getElMejor().toString() + "\n" + "Arbol mejor resultado(" +  AG.getElMejor().getNumBocados() +") ");
@@ -127,7 +130,7 @@ public class Main extends JFrame {
 		// se pueden añadir las opciones de forma independiente, o "de seguido"; el resultado es el mismo.
 		config.addOption(new IntegerOption<AlgoritmoGenetico>("Poblacion", "tamaño de la poblacion", "tamPob", 1, 1000))
 		.addOption(new IntegerOption<AlgoritmoGenetico>("Generaciones", "numero de generaciones", "numMaxGen", 1, 1000))
-		.addOption(new IntegerOption<AlgoritmoGenetico>("Altura maxima", "Altura maxima del arbol", "hMax", 1, 10))
+		.addOption(new IntegerOption<AlgoritmoGenetico>("Altura maxima", "Altura maxima del arbol", "hMax", 2, 10))
 		.addOption(new IntegerOption<AlgoritmoGenetico>("Participantes", "numero de participantes para el metodo de seleccion", "participantes", 0, 100))
 		.addOption(new DoubleOption<AlgoritmoGenetico>("% Cruce", "porcentaje de cruce", "probCruce", 0, 1))
 		.addOption(new DoubleOption<AlgoritmoGenetico>("% Mutacion", "porcentaje de mutacion", "probMutacion", 0, 1))
@@ -151,7 +154,7 @@ public class Main extends JFrame {
 			JPanel panel=new JPanel();
 			switch(t.getTablero()[(int) i/32][i%32]) {
 			case CAMINADA:
-				panel.setBackground(Color.orange);
+				panel.setBackground(Color.green);
 				break;
 			case HABIACOMIDA:
 				panel.setBackground(Color.yellow);
