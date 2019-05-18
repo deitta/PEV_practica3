@@ -30,10 +30,7 @@ public class Cromosoma {
 		fitness = 0;
 		numBocados = 0;
 
-		int pasosAux = pasosMax;
-		while (getArbol().getPasosMax() > 0)
-			t.recorreTablero(getArbol(), getArbol());
-		getArbol().setPasosMax(pasosAux);
+		t.recorreTablero(getArbol());
 		
 		for (int i = 0; i < 32; i++)
 			for (int j = 0; j < 32; j++)
@@ -44,7 +41,8 @@ public class Cromosoma {
 		
 		// penaliza a los arboles con altura mayor a hMax
 		if (hMax < arbol.getAltura()) fitness -= (arbol.getAltura() - hMax)*3;
-		fitness = fitness - 0.1*arbol.getNum_nodos();
+		if (arbol.getNum_nodos() > AlgoritmoGenetico.mediaTamPob && (int) Math.random()*2 == 0)
+			fitness = fitness - 0.1*arbol.getNum_nodos();
 
 		return fitness;
 	}

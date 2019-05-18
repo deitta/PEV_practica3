@@ -34,7 +34,14 @@ public class Tablero {
 		restauraTablero();
 	}
 
-	public void recorreTablero(Arbol arbol, Arbol ejecutar) {
+	public void recorreTablero(Arbol arbol) {
+		int pasosAux = arbol.getPasosMax();
+		while (arbol.getPasosMax() > 0)
+			this.recorreTableroAux(arbol, arbol);
+		arbol.setPasosMax(pasosAux);
+	}
+	
+	private void recorreTableroAux(Arbol arbol, Arbol ejecutar) {
 		if (arbol.getPasosMax() > 0) {
 			switch(ejecutar.getDato()) {
 			case AVANZA:
@@ -55,17 +62,17 @@ public class Tablero {
 				Hormiga horAux = new Hormiga(hor.ejeX, hor.ejeY, hor.dir);
 				horAux.avanza();
 				if (tablero[horAux.ejeY][horAux.ejeX] == TEstado.HAYCOMIDA)
-					recorreTablero(arbol, ejecutar.getHi());
-				else recorreTablero(arbol, ejecutar.getHd());
+					recorreTableroAux(arbol, ejecutar.getHi());
+				else recorreTableroAux(arbol, ejecutar.getHd());
 				break;
 			case PROGN2:
-				recorreTablero(arbol, ejecutar.getHi());
-				recorreTablero(arbol, ejecutar.getHd());
+				recorreTableroAux(arbol, ejecutar.getHi());
+				recorreTableroAux(arbol, ejecutar.getHd());
 				break;
 			case PROGN3:
-				recorreTablero(arbol, ejecutar.getHi());
-				recorreTablero(arbol, ejecutar.getHc());
-				recorreTablero(arbol, ejecutar.getHd());
+				recorreTableroAux(arbol, ejecutar.getHi());
+				recorreTableroAux(arbol, ejecutar.getHc());
+				recorreTableroAux(arbol, ejecutar.getHd());
 				break;
 			}
 		}

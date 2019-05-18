@@ -104,10 +104,7 @@ public class Main extends JFrame {
 				plot.addLinePlot("mejor de la generacion", x, AG.getGenMejor());
 				plot.addLinePlot("media de la generacion", x, AG.getGenMedia());
 				
-				int pasosMax = AG.getElMejor().getPasosMax();
-				while (AG.getElMejor().getArbol().getPasosMax() > 0)
-					t.recorreTablero(AG.getElMejor().getArbol(), AG.getElMejor().getArbol());
-				AG.getElMejor().getArbol().setPasosMax(pasosMax);
+				t.recorreTablero(AG.getElMejor().getArbol());
 				dibujaTablero(t, tablero);
 
 				resultado.setText( AG.getElMejor().toString() + "\n" + "Arbol mejor resultado(" +  AG.getElMejor().getNumBocados() +") ");

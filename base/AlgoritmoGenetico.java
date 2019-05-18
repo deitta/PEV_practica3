@@ -270,6 +270,15 @@ public class AlgoritmoGenetico {
 			else mejorAbsoluto[generacion] = mejorAbsoluto[generacion-1];
 		}
 	}
+
+	private void calculaMediaTamPob() {
+		mediaTamPob = 0;
+		
+		for (int i = 0; i < tamPob; i++)
+			mediaTamPob += pob[i].getArbol().getNum_nodos();
+
+		mediaTamPob = mediaTamPob / tamPob;
+	}
 	
 	public void AlgoritmoGeneticoFuncion(){
 		int generacionesAtascado = 0;
@@ -297,6 +306,8 @@ public class AlgoritmoGenetico {
 			if (tamElite > 0) incluyeElite(tamElite);
 
 			evalua();
+			
+			calculaMediaTamPob();
 			
 			// para las graficas
 			media(generacionActual);
