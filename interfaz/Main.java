@@ -107,7 +107,7 @@ public class Main extends JFrame {
 				t.recorreTablero(AG.getElMejor().getArbol());
 				dibujaTablero(t, tablero);
 
-				resultado.setText( AG.getElMejor().toString() + "\n" + "Arbol mejor resultado(" +  AG.getElMejor().getNumBocados() +") ");
+				resultado.setText("Arbol mejor resultado(" +  AG.getElMejor().getNumBocados() +"): " + "\n" + AG.getElMejor().toString());
 			}
 		});
 
@@ -151,7 +151,7 @@ public class Main extends JFrame {
 			JPanel panel=new JPanel();
 			switch(t.getTablero()[(int) i/32][i%32]) {
 			case CAMINADA:
-				panel.setBackground(Color.green);
+				panel.setBackground(Color.orange);
 				break;
 			case HABIACOMIDA:
 				panel.setBackground(Color.yellow);

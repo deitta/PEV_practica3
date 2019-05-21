@@ -45,10 +45,10 @@ public class AlgoritmoGenetico {
 		probCruce = 0.6;
 		probMutacion = 0.05;
 		hMax = 4;
-		seleccion = "Ranking";
+		seleccion = "Ruleta";
 		mutacion = "Inicializacion";
 		participantes = 3;
-		elitismo = 0.03;
+		elitismo = 0;
 		contractividad = false;
 
 		// en principio lo de abajo no es necesario pero si se quita da error por toString
@@ -281,6 +281,7 @@ public class AlgoritmoGenetico {
 	}
 	
 	public void AlgoritmoGeneticoFuncion(){
+					
 		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
 		generacionActual = 0;
@@ -322,14 +323,6 @@ public class AlgoritmoGenetico {
 				else generacionesAtascado++;
 			} else generacionActual++;
 		}
-		System.out.println("Ejecucion " + ejecucion);
-		System.out.println("Puntuacion: " + elMejor.getNumBocados());
-		System.out.println("Nº de mutaciones: " + numMuts);
-		System.out.println("Nº de cruces: " + numCruces);
-		System.out.println("Altura: " + elMejor.getArbol().getAltura());
-		System.out.println("Nº de nodos: " + elMejor.getArbol().getNum_nodos());
-		System.out.println();
-		ejecucion++;
 	}
 
 
